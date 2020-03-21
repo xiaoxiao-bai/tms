@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../assets/css/layui.css">
+    <link rel="stylesheet" href="../assets/css/view.css" />
+    <link rel="stylesheet" href="../assets/css/tankuang.css" />
+    <title></title>
+</head>
+<style>
+    .main {
+        width: 100%;
+        height: 100%;
+        float: left;
+        display: inline;
+        position: absolute;
+        overflow: hidden;
+        background-color: #f7fcff;
+        /*border-left:#0882cf solid 8px; 						    border-right:#0882cf solid 8px;*/
+    }
+
+    .main_l {
+        width: 100%;
+        height: 48%;
+        float: left;
+        display: inline;
+        margin-bottom: 9px;
+        overflow: hidden;
+    }
+
+    .main_b {
+        height: 43px;
+        width: 100%;
+        background-image: url("../views/js/title_bg.jpg");
+        background-repeat: repeat-x;
+        float: left;
+        display: inline;
+        overflow: hidden;
+    }
+
+    .main h3 {
+        width: 184px;
+        height: 43px;
+        text-align: center;
+        font-weight: bold;
+        font: "宋体";
+        color: #ffffff;
+        background-image: url(../views/js/title1.jpg);
+        background-repeat: no-repeat;
+        line-height: 43px;
+        font-size: 12px;
+    }
+
+    .tble {
+        width: 184px;
+        height: 43px;
+        text-align: center;
+        font-weight: bold;
+        font: "宋体";
+        color: #ffffff;
+        background-image: url(<%=PATH%>styles/image/title1.jpg);
+        background-repeat: no-repeat;
+        line-height: 43px;
+        font-size: 12px;
+    }
+</style>
+
+<body>
+    <div class="main">
+        <div class="main_l">
+            <div class="main_b" cellspacing="0">
+                <h3 class="tble">待办事宜</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-content">
+        <div class="layui-row layui-col-space20">
+
+            <div class="layui-row">
+                <div class="layui-card">
+                    <div class="layui-card-body">
+                        <table id="demo"></table>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-sm12 layui-col-md12">
+                <div class="layui-card">
+                    <div class="layui-tab layui-tab-brief">
+                        <ul class="layui-tab-title">
+                            <li id="xiaoxigaonggao" class="layui-this">新闻</li>
+                            <li id="xiaoxotongzhi">消息</li>
+                        </ul>
+                        <div class="layui-tab-content">
+                            <div class="layui-tab-item layui-show">
+                                <table id="demo2"></table>
+                            </div>
+                            <div class="layui-tab-item">
+                                <table id="demo3"></table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- 遮罩层1 公司名称弹框 -->
+        <div class="zezhaoceng4" id="zezhaoceng4">
+            <div class="beijingCeng4">
+                <div id="beijingCengBtn4"
+                    style="position: absolute;z-index: 88;right: 13px;top: 10px;color:red;width: 20px;height: 20px;">
+                    <i class="layui-icon" style="font-size: 30px;">&#x1007;</i>
+                </div>
+                <div class="layui-row">
+                    <div class="layui-card">
+                        <div class="layui-card-body">
+                            <div class="form-box">
+                                <div class="layui-form layui-form-item">
+                                    <div style="width: 100%; ">
+                                        <TABLE cellspacing="0" cellpadding='0' border="0" width="100%">
+                                            <tr>
+                                                <td>&nbsp;&nbsp;</td>
+                                            </tr>
+                                            <tr>
+                                                <td id="title2" align="center">
+                                                    <h3></h3>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <textarea cols="70" rows="23" id="context" name="context"
+                                                        wrap="hard" readonly="readonly"
+                                                        style="border: none;  overflow-x:auto ;overflow-y:auto; ">&nbsp;&nbsp;</textarea>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>&nbsp;&nbsp;</td>
+                                            </tr>
+                                        </TABLE>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../assets/layui.all.js"></script>
+    <script src="./yewuguanli/kongjianFZ/tankuang.js"></script>
+    <script src="./yewuguanli/kongjianFZ/djbhOrgwid.js"></script>
+    <script src="./yewuguanli/kongjianFZ/zezhaoceng.js"></script>
+    <script src="./yewuguanli/kongjianFZ/djbhOrgwid.js"></script>
+    <script src="../views/js/_URL.js"></script>
+    <script>
+        var element = layui.element;
+        var table = layui.table;
+        var form = layui.form;
+        var userDate = "";
+        var dbsxShopListArr = [];
+        var gonggaoListArr = [];
+        var syShopListWArr = [];
+        var MaintainListWArr = [];
+        var url = _url();
+        var serverCode = _serverCode();
+
+        function NewsListWClick(index) {
+
+            var $input1 = document.getElementById("zezhaoceng4");
+            $input1.style.display = "block";
+            NewsWArr = layui.table.checkStatus('demo').data[0];
+            //alert(JSON.stringify(NewsListWArr[index]));
+            $("#title2").html("<h3  >" + NewsListWArr[index].title + "</h3>");
+            $("#context").html("&nbsp;&nbsp;" + NewsListWArr[index].content)
+        }
+
+        function NewsListWClick2(index) {
+            var $input1 = document.getElementById("zezhaoceng4");
+            $input1.style.display = "block";
+
+            $("#title2").html("<h3  >" + MaintainListWArr[index].kh_name + "</h3>");
+            $("#context").html("&nbsp;&nbsp;" + MaintainListWArr[index].content)
+        }
+
+        function dbsyListXR(dataList) {
+            return {
+                elem: '#demo',
+                cols: [
+                    [ //标题栏
+                        {
+                            type: 'checkbox'
+                        },
+                        {
+                            field: 'code',
+                            title: '编号',
+                            width: 90
+                        }, {
+                            field: 'kh_name',
+                            title: '客户名称',
+                            width: 150
+                        }, {
+                            field: 'type',
+                            title: '状态',
+                            width: 120
+                        }, {
+                            field: 'uid',
+                            title: '人员',
+                            width: 100
+                        }, {
+                            field: 'memo',
+                            title: '代办内容',
+                            width: 250
+                        }, {
+                            field: 'createtime',
+                            title: '创建时间',
+                            width: 170,
+                            //   sort: true
+                        }, {
+                            field: 'BtnStyle',
+                            width: 100,
+                            title: '操作',
+                            fixed: 'right',
+                        }
+                    ]
+                ],
+                data: dataList,
+                skin: 'line' //表格风格
+                ,
+                even: true,
+                page: true //是否显示分页
+                ,
+                limits: [5, 7, 10, 20],
+                limit: 3 //每页默认显示的数量
+            };
+        }
+
+        function dbsy(callback) {
+            $layer.load();
+            $("#renwuRongQi").empty();
+            var data = "Type=0"; //序列化表单数据 
+            $.getJSON(url + "MaintainSelect2?" + data,
+                function (json) {
+                    MaintainListWArr = json.RDATA;
+                    $layer.closeAll('loading');
+                    callback(dbsyListXH(MaintainListWArr), MaintainListWArr);
+                    return;
+                })
+        }
+
+        function dbsyListXH(dataList) {
+            for (var i = 0; i < dataList.length; i++) {
+                if (dataList[i].type == 1) {
+                    dataList[i].type = "已完成";
+                } else {
+                    dataList[i].type = "未完成";
+                }
+
+                dataList[i].code = (i + 1);
+                dataList[i].BtnStyle = "<div>" +
+                    "<div style='cursor:pointer;float: left;padding: 0px 5px;background: #177ce3;border-radius: 2px;color: #fff;' onclick='NewsListWClick2(" +
+                    i + ")'>浏览</div>" +
+
+                    "</div>"
+            }
+            return dbsyListXR(dataList);
+        }
+
+        function ZJspNewsListXR(dataList) {
+
+            return {
+                elem: '#demo2',
+                cols: [
+
+                    [ //标题栏
+                        {
+                            type: 'checkbox'
+                        },
+                        {
+                            field: 'code',
+                            title: '编号',
+                            width: 170
+                        }, {
+                            field: 'title',
+                            title: '新闻名称',
+                            width: 210
+                        }, {
+                            field: 'memo',
+                            title: '提示',
+                            width: 250
+                        }, {
+                            field: 'createtime',
+                            title: '创建时间',
+                            width: 220,
+                            //   sort: true
+                        }, {
+                            field: 'BtnStyle',
+                            width: 100,
+                            title: '操作',
+                            fixed: 'right',
+                        }
+
+                    ]
+                ],
+                data: dataList,
+                skin: 'line' //表格风格
+                ,
+                even: true,
+                page: true //是否显示分页
+                ,
+                limits: [5, 7, 10, 20],
+                limit: 3 //每页默认显示的数量
+            };
+        }
+
+        function qrygonggao(callback) {
+            $layer.load();
+            $("#renwuRongQi").empty();
+            var data = "Type=0"; //序列化表单数据 
+            $.getJSON(url + "NewsSelect?" + data,
+                function (json) {
+                    NewsListWArr = json.RDATA;
+                    $layer.closeAll('loading');
+                    callback(ZJspNewsListXH(NewsListWArr), NewsListWArr);
+                    return;
+                })
+        }
+
+        function ZJspNewsListXH(dataList) {
+            for (var i = 0; i < dataList.length; i++) {
+                dataList[i].code = (i + 1);
+                dataList[i].BtnStyle = "<div>" +
+                    "<div style='cursor:pointer;float: left;padding: 0px 5px;background: #177ce3;border-radius: 2px;color: #fff;' onclick='NewsListWClick(" +
+                    i + ")'>浏览</div>" +
+
+                    "</div>"
+            }
+            return ZJspNewsListXR(dataList);
+        }
+
+        function init() {
+            userDate = JSON.parse(window.sessionStorage.getItem("userNameList"));
+            qrygonggao(function (date, NewsListArr1) {
+                table.render(date);
+            });
+            dbsy(function (date, NewsListArr1) {
+                table.render(date);
+            });
+
+        }
+        init();
+    </script>
+
+</body>
+
+</html>

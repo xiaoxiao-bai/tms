@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" href="../../assets/css/layui.css">
+  <link rel="stylesheet" href="../../assets/css/view.css" />
+  <link rel="stylesheet" href="../../assets/css/tankuang.css" />
+
+  <link rel="icon" href="/favicon.ico">
+  <title>订单管理</title>
+  <style>
+    .beijingCeng_t {
+      word-wrap: break-word;
+      word-break: break-all;
+      overflow: hidden;
+      width: 70%;
+      margin-left: 15%;
+      height: 390px;
+      position: fixed;
+      top: 50%;
+      margin-top: -200px;
+      background: #fff;
+      border-radius: 10px;
+      overflow: scroll;
+    }
+  </style>
+</head>
+
+<body class="layui-view-body">
+  <div class="layui-row">
+    <div>
+      <div class="layui-content">
+        <div class="layui-row">
+          <div class="layui-card">
+            <div class="layui-card-body">
+              <div class="form-box">
+                <div class="layui-form layui-form-item">
+                  <div class="layui-inline" style="margin-right: -10px;float: left;">
+                    <label class="layui-form-label" style="width:auto">开始时间:</label>
+                    <div class="layui-input-inline" style="width:120px">
+                      <input type="text" class="layui-input" id="D_Date" placeholder="yyyy-MM-dd">
+                    </div>
+                  </div>
+
+                  <div class="layui-inline" style="float: left;">
+                    <label class="layui-form-label" style="width:auto">结束时间:</label>
+                    <div class="layui-input-inline" style="width:120px">
+                      <input type="text" class="layui-input" id="S_Date" placeholder="yyyy-MM-dd">
+                    </div>
+                  </div>
+                  <div class="layui-col-xs3" style="width: auto;">
+                    <div class="layui-form-mid" style="float: left;">路线过滤:</div>
+                    <div class="layui-input-inline" style="width: 120px;">
+                      <input type="text" autocomplete="off" class="layui-input" id="shop_luxian">
+                    </div>
+                  </div>
+                  <div class="layui-col-xs3" style="width: auto;">
+                    <div class="layui-form-mid" style="float: left;">过滤条件:</div>
+                    <div class="layui-input-inline" style="width: 120px;">
+                      <input type="text" autocomplete="off" class="layui-input" id="shop_name">
+                    </div>
+                  </div>
+
+                  <button class="layui-btn layui-btn-blue" onclick="qryShopListBtn()" id="qryShopListBtn"><i
+                      class='layui-icon'>&#xe615;</i>查询</button>
+                </div>
+
+
+                <button class="layui-btn layui-btn-blue" style="margin-top: -10px;float:left"
+                  onclick="ydaddListDate()"><i class="layui-icon">&#xe654;</i>生成运单</button>
+                <div style="overflow: hidden;height: 30px;">
+                  <div style="margin-left: 20px;float: left;font-size: 16px;">货物总体积: <span
+                      style="color:coral;font-weight: 600;" id="huowuzhongjiage2">0</span> m³</div>
+                  <div style="margin-left: 20px;float: left;font-size: 16px;">货物总价格: <span
+                      style="color:coral;font-weight: 600;" id="huowuzhongjiage12">0</span> 元</div>
+                </div>
+
+
+                <table id="demo"></table>
+             </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- 遮罩层1 公司名称弹框 -->
+  <div class="zezhaoceng" id="zezhaoceng">
+    <div class="beijingCeng">
+      <div id="beijingCengBtn"
+        style="position: absolute;z-index: 88;right: 13px;top: 10px;color:red;width: 20px;height: 20px;">
+        <i class="layui-icon" style="font-size: 30px;">&#x1007;</i>
+      </div>
+      <div class="layui-row">
+        <div class="layui-card">
+          <div class="layui-card-body">
+            <div class="form-box">
+              <div class="layui-form layui-form-item">
+                <div class="layui-inline">
+                  <div class="layui-form-mid">产品名称:</div>
+                  <div class="layui-input-inline" style="width: 100px;">
+                    <input type="text" autocomplete="off" class="layui-input" id="shopListInput"
+                      onkeydown="inputchanPinMCD(event);">
+                  </div>
+
+                  <button class="layui-btn layui-btn-blue" id="shopListBtn">查询</button>
+                </div>
+              </div>
+              <table id="demo1"></table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="zezhaoceng4" class="zezhaoceng4">
+    <div class="beijingCeng4">
+      <div id="beijingCengBtn4"
+        style="position: absolute;z-index: 88;right: 13px;top: 10px;color:red;width: 20px;height: 20px;">
+        <i class="layui-icon" style="font-size: 30px;">&#x1007;</i>
+      </div>
+      <div class="layui-row">
+        <div class="layui-card">
+          <div class="layui-card-body">
+            <div class="form-box" style="height: 28px;font-size: 15px;">
+
+              <div style="margin-left: 20px;float: left;">货物总体积:<span id="huowuzhongjiage"></span>m³</div>
+              <div style="margin-left: 20px;float: left;">货物总价格:<span id="huowuzhongjiage1"></span>元</div>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="layui-form layui-form-item">
+         
+          <div class="layui-col-xs12" style="padding-left: 20%;margin-top: 30px;">
+            <div class="layui-form-mid" style="float: centre;">人员司机:</div>
+            <div class="layui-input-inline" style="width: 200px;">
+              <select class="selector" id="siji">
+              </select>
+            </div>
+          </div>
+          <div class="layui-col-xs12" style="padding-left: 20%;margin-top: 30px;">
+            <div class="layui-form-mid" style="float: centre;">选择车辆:</div>
+            <div class="layui-input-inline" style="width: 200px;">
+              <select class="selector1" id="chel">
+              </select>
+            </div>
+          </div>
+          <div style="width: 100%;float: left;">
+            <div style="padding-left: 20%;margin-top: 30px;float: left;">车辆装货率:<span id="clzhl">0</span>
+            </div>
+            <div style="padding-left: 3%;margin-top: 30px;float: left;">车牌号:<span id="carph"></span></div>
+            <div style="padding-left: 3%;margin-top: 30px;float: left;">车辆类型:<span id="cllx"></span></div>
+          </div>
+          <div style="width: 100%;float: left;">
+            <div style="padding-left: 20%;margin-top: 3px;float: left;">车辆分类:<span id="clfl">0</span>
+            </div>
+            <div style="padding-left: 3%;margin-top: 3px;float: left;">车辆体积:<span id="cltj">0</span></div>
+            <div style="padding-left: 3%;margin-top: 3px;float: left;">货物价格:<span id="clmoney">0</span>
+            </div>
+          </div>
+
+
+        </div>
+        <div style="padding-left: 40%;margin-top: 30px;">
+          <button class="layui-btn layui-btn-blue" id="QDNameBtn">确定</button>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="../../assets/layui.all.js"></script>
+  <script src="../../assets/jquery.js" type="text/javascript"></script>
+
+  <script src="./kongjianFZ/zezhaoceng.js"></script>
+  <script src="./kongjianFZ/djbhOrgwid.js"></script>
+  <script src="./kongjianFZ/jiaoyan.js"></script>
+
+  <script src="../js/_URL.js"></script>
+  <script>
+    var element = layui.element;
+    var table = layui.table;
+    var $form = layui.form;
+    var isTypebNum = 0;
+    var laydate = layui.laydate;
+    var $ = layui.$;
+    var $layer = layui.layer;
+    var DateListArr = "";
+    var userDate = JSON.parse(window.sessionStorage.getItem("userNameList"));
+    var isshow = true;
+    var url = _url();
+    var url1 = _urlJson();
+    var shopmx = {};
+    var serverCode = _serverCode();
+
+    var BumenListArr = {};
+    var carArraylist = {};
+    // 订单列表数据
+    var RoleListArr = {};
+    // 选中订单数据
+    var RoleArr = {}
+    // 外边选中订单数据
+    var RoleWArr = {}
+    var RoleListWArr = {}
+    var cheliangID = "";
+    function ydaddListDate() {
+
+      ceshiSXZ(carArraylist[0]);
+      if (layui.table.checkStatus('demo').data.length < 1) {
+        alert('最少选择一个订单');
+        return;
+      }
+      var $input = document.getElementById("zezhaoceng4");
+      $input.style.display = "block";
+
+    }
+    $("#QDNameBtn").click(function () {
+      var $input = document.getElementById("zezhaoceng4");
+      $input.style.display = "none";
+      shengchengyundan()
+
+    })
+    function shengchengyundan() {
+      // alert($("#siji").val());
+      // alert($("#siji").text());
+      // alert();
+      // return;
+
+      var ss = "";
+      for (let index = 0; index < layui.table.checkStatus('demo').data.length; index++) {
+        Array = layui.table.checkStatus('demo').data[index];
+        ss += Array.order_id + ",";
+      }
+
+
+      $layer.load();
+      var data = "UserID=" +$("#siji option:checked").text() + "&OrderArr=" + ss + "&UserName=" + userDate.userid + "&carid=" + cheliangID  + "&UserName1=" + userDate.userid + "&UserName2=" + $("#siji").val(); //序列化表单数据 
+      $.getJSON(url + "OrderSCYunselect?" + data,
+        function (json) {
+          //alert(JSON.stringify(json))
+          alert(json.Response.msg)
+          $layer.closeAll('loading');
+          window.location.reload()
+          return;
+        })
+    }
+    layui.use(['form', 'element'], function () {
+      var form = layui.form;
+    });
+    // 按钮点击事件
+    $("#shopListBtn").click(function () {
+      CXSHOPMX(function (
+        date, RoleListArr1) {
+        table.render(date);
+      });
+    })
+
+    function CXSHOPMX(callback) {
+      $layer.load();
+
+
+      $("#renwuRongQi").empty();
+      var data = "orderid=" + shopmx.order_id; //序列化表单数据 
+      $.getJSON(url + "orderDetailsSelect?" + data,
+        function (json) {
+
+          $layer.closeAll('loading');
+
+          SHOPArr = json.Response.RDATA;
+
+          $layer.closeAll('loading');
+          callback(SHOPMXtWXH(SHOPArr), SHOPArr);
+          return;
+        })
+    }
+
+    function CKMXClick(index) {
+      var $input = document.getElementById("zezhaoceng");
+      $input.style.display = "block";
+
+      shopmx = RoleListWArr[index];
+
+      CXSHOPMX(function (
+        date, RoleListArr1) {
+        table.render(date);
+      });
+    }
+
+    function SHOPMXtWXH(dataList) {
+
+      for (var i = 0; i < dataList.length; i++) {
+        dataList[i].code = (i + 1);
+
+      }
+      return SHOPMXTAB(dataList);
+    }
+    function SHOPMXTAB(dataList) {
+      return {
+        elem: '#demo1',
+        cols: [
+          [ //标题栏
+            {
+              field: 'code',
+              title: '编号',
+              width: 90
+            }, {
+              field: 'shopid',
+              title: '商品ID',
+              width: 120
+            }, {
+              field: 'shopName',
+              title: '商品名称',
+              width: 220
+            }, {
+              field: 'shopNum',
+              title: '商品数',
+              width: 170
+            }, {
+              field: 'shopDetails',
+              title: '商品明细',
+              width: 170,
+
+            }, {
+              field: 'shopnomey',
+              title: '商品价格',
+              width: 120,
+            }, {
+              field: 'shopbulk',
+              title: '商品体积',
+              width: 120,
+            },
+
+            
+          ]
+        ],
+        data: dataList,
+        skin: 'line' //表格风格
+        ,
+        even: true,
+        page: true //是否显示分页
+        ,
+        limits: [5,10, 20],
+        limit: 5,
+        done: function (res, page, count) {
+          var that = this.elem.next();
+ 
+          console.log(that);
+          res.data.forEach(function (item, index) {
+
+             
+
+          });
+        }
+      };
+    }
+    function search2(index) {
+      setTimeout(function () {
+        ceshiSXZ(carArraylist[0]);
+      }, 100);
+
+    }
+    function RoleListWXR(dataList) {
+      return {
+        elem: '#demo',
+        cols: [
+          [ //标题栏
+            {
+              type: 'checkbox'
+            }, {
+              field: 'code',
+              title: '编号',
+              width: 70
+            }, {
+              field: 'order_id',
+              title: '订单ID',
+              width: 180
+            }, {
+              field: 'order_type',
+              title: '订单类型',
+              width: 150
+            }, {
+              field: 'fhrName',
+              title: '发货人姓名',
+              width: 110
+            }, {
+              field: 'fhrAddress',
+              title: '发货人地址',
+              width: 120
+            }, {
+              field: 'fhrPhone',
+              title: '发货人手机',
+              width: 170,
+            }, {
+              field: 'consignee_GSMC',
+              title: '收货人单位',
+              width: 110
+            }, {
+              field: 'shrName',
+              title: '收货人姓名',
+              width: 110
+            }, {
+              field: 'shrAddress',
+              title: '收货人地址',
+              width: 120
+            }, {
+              field: 'shrPhone',
+              title: '收货人手机',
+              width: 170,
+            }, {
+              field: 'zjjs',
+              title: '整件件数',
+              width: 120,
+            }, {
+              field: 'lsjs',
+              title: '零散件数',
+              width: 120,
+            }, {
+              field: 'hw_type',
+              title: '货物类型',
+              width: 120,
+            }, {
+              field: 'sk_state',
+              title: '付款方式',
+              width: 120,
+            }, {
+              field: 'ygjz',
+              title: '预估价值',
+              width: 120,
+            }, {
+              field: 'luxian',
+              title: '路线',
+              width: 120,
+            }, {
+              field: 'createtime',
+              title: '创建时间',
+              width: 120,
+            }, {
+              field: 'sk_nomey',
+              title: '收款金额',
+              width: 120
+            }, {
+              field: 'BtnStyle',
+              width: 60,
+              title: '操作',
+              fixed: 'right',
+            }
+          ]
+        ],
+        data: dataList,
+        skin: 'line' //表格风格
+        ,
+        even: true,
+        page: true //是否显示分页
+        ,
+        limits: [10, 20],
+        limit: 10,
+        done: function (res, page, count) {
+          var that = this.elem.next();
+          //alert(JSON.stringify(res))
+
+          console.log(that);
+          res.data.forEach(function (item, index) {
+
+            var tr = that.find(".layui-table-box tbody tr[data-index='" + index + "']").attr("onclick",
+              "search2('" + index + "','" + res.data[index].ID + "')");
+
+          });
+        }
+      }; table.on('toolbar(test)', function (obj) {
+        var checkStatus = table.checkStatus(obj.config.id); //获取选中行状态
+        switch (obj.event) {
+          case 'getCheckData':
+            var data = checkStatus.data; //获取选中行数据
+            layer.alert(JSON.stringify(data));
+            break;
+        };
+      });
+    }
+    function RoleListWXH(dataList) {
+
+      for (var i = 0; i < dataList.length; i++) {
+        dataList[i].code = (i + 1);
+       if (dataList[i].order_type = "0") {
+          dataList[i].order_type2 = "待处理";
+        }
+         dataList[i].BtnStyle = "<div>" +
+          "<div style='float: left;padding: 0px 5px;background: #177ce3;border-radius: 2px;color: #fff;' onclick='CKMXClick(" +
+          i + ")'><i class='layui-icon'>&#xe615;</i></div>" +
+          "</div>"
+      }
+      return RoleListWXR(dataList);
+    }
+
+    function get_dd_ListDate(  USERID, callback) {
+      $layer.load();
+      var data = "order_type=0&province=" + "&city=" + "&district=" + "&luxian=" + $("#shop_luxian").val() + "&order_id=" + $("#shop_name").val() + "&i_statesj=" + $("#D_Date").val() + "&i_endsj=" + $("#S_Date").val(); //序列化表单数据 
+      $.getJSON(url + "PC_Orderselect2?" + data,
+        function (json) {
+
+          $layer.closeAll('loading');
+          RoleListWArr = json.Response.RDATA;
+
+          slect_cheliang();
+          callback(RoleListWXH(RoleListWArr), RoleListWArr);
+          return;
+        })
+    }
+
+    function qryShopListBtn() {
+      get_dd_ListDate(  userDate.USERCODE, function (
+        date, RoleListArr1) {
+        table.render(date);
+        
+      });
+      
+      
+    }
+    $(document).ready(function () {
+      get_dd_ListDate(  userDate.USERCODE, function (
+        date, RoleListArr1) {
+        table.render(date);
+       
+      });
+      laydate.render({
+        elem: '#S_Date',
+        value: timeDate_(1),
+        isInitValue: true
+      }); //常规用法
+      laydate.render({
+        elem: '#D_Date',
+        value: timeDate_(0),
+        isInitValue: true
+      });
+      slect_siji();
+    })
+
+    function slect_siji() {
+      $layer.load();
+      var data = "username=" + "&value1=1"; //序列化表单数据 
+      $.getJSON(url + "getsj?" + data,
+        function (json) {
+
+          $("#siji").empty();
+          $layer.closeAll('loading');
+          for (let index = 0; index < json.Response.RDATA.length; index++) {
+            $("#siji").append("<option value=" + json.Response.RDATA[index].userid + ">" + json.Response.RDATA[index].userName + "</option>");
+          }
+          layui.form.render("select");
+
+        })
+    }
+    function slect_cheliang() {
+      // alert(1);
+      $layer.load();
+      var data = "username="; //序列化表单数据 
+      $.getJSON(url + "carrest",
+        function (json) {
+
+          $("#chel").empty();
+          $layer.closeAll('loading');
+          carArraylist = json.Response.RDATA;
+           for (let index = 0; index < json.Response.RDATA.length; index++) {
+            $("#chel").append("<option value=" + index + ">" + "&nbsp;车牌号:" + json.Response.RDATA[index].car_code + "  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;车辆类型:" + json.Response.RDATA[index].car_type + "  &nbsp;&nbsp;&nbsp;车辆体积:" + json.Response.RDATA[index].car_bulk + "m³  &nbsp;&nbsp;&nbsp;车辆分类:" + (json.Response.RDATA[index].car_typeLB == 0 ? "常温车辆" : "冷藏车辆") + "</option>");
+          }
+          layui.form.render("select");
+
+        })
+    }
+
+   
+
+    function ceshiSXZ(number1) {
+      console.log(number1)
+      var ss = 0;
+      var sss = 0;
+      for (let index = 0; index < layui.table.checkStatus('demo').data.length; index++) {
+        Array2 = layui.table.checkStatus('demo').data[index];
+        ss = (ss * 10 + Array2.tiji * 10) / 10;
+        sss = (sss * 10 + Array2.ygjz * 10) / 10;
+        // ss += Array.tiji + ",";
+      }
+      cheliangID = number1.car_id;
+      $("#carph").html(number1.car_code);
+      $("#cllx").html(number1.car_type);
+      $("#clfl").html(number1.car_typeLB == 0 ? "常温车辆" : "冷藏车辆");
+      $("#cltj").html(number1.car_bulk + "m³");
+      $("#clmoney").html(sss.toFixed(0) + "元");
+      $("#huowuzhongjiage1").html(sss.toFixed(0));
+      $("#huowuzhongjiage12").html(sss.toFixed(0));
+      let zonglianghw = (ss / number1.car_bulk) * 100;
+
+      $("#huowuzhongjiage").html(ss.toFixed(2));
+      $("#huowuzhongjiage2").html(ss.toFixed(2));
+      // console.log(.toFixed(2)+"立方米");
+      if (zonglianghw > 80 && zonglianghw < 100) {
+        $("#clzhl").css("color", "purple");
+        $("#clzhl").html(zonglianghw.toFixed(0) + "%");
+      } else if (zonglianghw > 100) {
+        $("#clzhl").css("color", "red");
+        $("#clzhl").html(zonglianghw.toFixed(0) + "%");
+      } else {
+        $("#clzhl").css("color", "green");
+        $("#clzhl").html(zonglianghw.toFixed(0) + "%");
+      }
+
+    }
+    $(document).ready(function () {
+      var form = layui.form;
+      // select下拉框选中触发事件
+      form.on("select", function (data) {
+        if (data.value.length < 3) {
+          ceshiSXZ(carArraylist[data.value]);
+        }
+        // 获取选中的值
+      });
+
+    });
+    function timeDate_(value) {
+      var date = new Date();
+      this.year = date.getFullYear();
+      this.month = date.getMonth() + 1;
+      this.month1 = date.getMonth();
+      if (this.month1 < 10) {
+        this.month1 = "0" + this.month1;
+      }
+      if (this.month < 10) {
+        this.month = "0" + this.month;
+      }
+      this.date = date.getDate();
+      if (this.date < 10) {
+        this.date = "0" + this.date;
+      }
+      this.hour = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+      this.minute = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+      this.second = date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
+      if (value == 1) {
+        return this.year + "-" + this.month + "-" + this.date;
+      } else {
+        return this.year + "-" + this.month1 + "-" + this.date;
+      }
+    }
+
+  </script>
+</body>
+
+</html>

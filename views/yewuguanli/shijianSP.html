@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" href="../../assets/css/layui.css">
+  <link rel="stylesheet" href="../../assets/css/view.css" />
+  <link rel="stylesheet" href="../../assets/css/tankuang.css" />
+
+  <link rel="icon" href="/favicon.ico">
+  <title>订单管理</title>
+  <style>
+      .beijingCeng_t {
+        word-wrap: break-word;
+        word-break: break-all;
+        overflow: hidden;
+        width: 70%;
+        margin-left: 15%;
+        height: 450px;
+        position: fixed;
+        top: 45%;
+        margin-top: -200px;
+        background: #fff;
+        border-radius: 10px;
+        overflow: scroll;
+      }
+      .el-textarea__inner2 {
+      display: block;
+      resize: vertical;
+      padding: 5px 15px;
+      line-height: 1.5;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+      width: 100%;
+      font-size: inherit;
+      color: #606266;
+      background-color: #fff;
+      background-image: none;
+      border: 1px solid #dcdfe6;
+      border-radius: 4px;
+      -webkit-transition: border-color .2s cubic-bezier(.645, .045, .355, 1);
+      transition: border-color .2s cubic-bezier(.645, .045, .355, 1);
+    }
+    .el-textarea__inner {
+      display: block;
+      resize: vertical;
+      padding: 5px 15px;
+      line-height: 1.5;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+      width: 50%;
+      font-size: inherit;
+      color: #606266;
+      background-color: #fff;
+      background-image: none;
+      border: 1px solid #dcdfe6;
+      border-radius: 4px;
+      -webkit-transition: border-color .2s cubic-bezier(.645, .045, .355, 1);
+      transition: border-color .2s cubic-bezier(.645, .045, .355, 1);
+    }
+
+     
+    </style>
+</head>
+
+<body class="layui-view-body">
+    <div class="layui-row">
+        <div>
+          <div class="layui-content">
+            <div class="layui-row">
+              <div class="layui-card">
+                <div class="layui-card-body">
+                  <div class="form-box">
+                    <div class="layui-form layui-form-item">
+                      
+
+                        <div class="layui-inline" style="margin-right: -10px;float: left;">
+                          <label class="layui-form-label" style="width:auto">开始时间:</label>
+                          <div class="layui-input-inline" style="width:120px">
+                            <input type="text" class="layui-input" id="D_Date" placeholder="yyyy-MM-dd">
+                          </div>
+                        </div>
+        
+                        <div class="layui-inline" style="float: left;">
+                          <label class="layui-form-label" style="width:auto">结束时间:</label>
+                          <div class="layui-input-inline" style="width:120px">
+                            <input type="text" class="layui-input" id="S_Date" placeholder="yyyy-MM-dd">
+                          </div>
+                        </div>
+                        <div class="layui-inline" style="float: left;">
+                          <label class="layui-form-label" style="width:auto">状态:</label>
+                          <div class="layui-input-inline" style="width:120px">
+                          <select id="state">
+                            <option></option>
+                            <option  value="0">未审核</option>
+                            <option  value="1">审核通过</option>
+                            <option  value="2">审核未通过</option>
+                          </select>
+                        </div>
+                      </div>
+                        <div class="layui-col-xs3">
+                          <div class="layui-form-mid" style="float: left;">过滤条件:</div>
+                           <div class="layui-input-inline" style="width: 160px;">
+                             <input type="text" autocomplete="off" class="layui-input" id="shop_name">
+                           </div>
+                           </div>
+                       
+                        <button class="layui-btn layui-btn-blue" id="qryShopListBtn"><i class='layui-icon'>&#xe615;</i>查询</button>
+                      </div>
+                         <!-- <div class="layui-col-xs3">
+                           <div class="layui-form-mid" style="float: left;">发货人：</div>
+                        <div class="layui-input-inline" style="width: 160px;">
+                          <input type="text" autocomplete="off" class="layui-input" id="sccs">
+                        </div>
+                        </div>
+                           <div class="layui-col-xs3">
+                           <div class="layui-form-mid" style="float: left;">批号:</div>
+                        <div class="layui-input-inline" style="width: 160px;">
+                          <input type="text" autocomplete="off" class="layui-input" id="pihao">
+                        </div>
+                         </div> -->
+
+                      <!-- <button class="layui-btn layui-btn-blue" style="margin-top: 0px;" onclick="addListDate()"><i
+                          class="layui-icon">&#xe654;</i>添加任务</button> -->
+
+                        </div>
+                        
+                      
+    
+                         <table id="demo"></table>
+
+                      
+            <div class="zezhaoceng3" id="zezhaoceng3">
+              <div class="beijingCeng_t"
+                style=" word-wrap: break-word;  word-break: break-all;  overflow: hidden;">
+                <div id="beijingCengBtn3"
+                  style="position: absolute;z-index: 88;right: 13px;top: 10px;color:red;width: 20px;height: 20px;">
+                  <i class="layui-icon" style="font-size: 30px;">&#x1007;</i>
+                </div>
+                <div class="layui-row">
+                  <div class="layui-card">
+                    <div class="layui-card-body">
+                        
+                        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;" id="t_bt">
+                          <legend><i class='layui-icon'>&#xe6b2;</i>审核意见</legend>
+                        </fieldset>
+                          <div id="img"  class="layui-col-xs5" style="margin-right: 20px;  background-color: black;text-align: center;vertical-align: middle;overflow: auto;">
+                          </div>
+                        <div>
+                         <textarea rows="12" placeholder="审核意见" cols="65" id="memo" class="el-textarea__inner"
+                            name="memo"></textarea>
+                          </div>
+                       
+                          </div>
+
+                         
+                          <div style="width: 100%;float: left;margin-top: 10px;margin-left: 30%;">
+                           
+                            <button class="layui-btn layui-btn-danger" style="margin-left: 0%;margin-right: 10%;" id="RoleListAddBtn2"
+                          onclick="f_updata(2);return false;"><i class='layui-icon'>&#x1006;</i>审批不通过</button>
+                          <button class="layui-btn" style="margin-left: 0%;" id="RoleListAddBtn"
+                          onclick="f_updata(1);return false;"><i class='layui-icon'>&#xe605;</i>审批通过</button>
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="zezhaoceng4" id="zezhaoceng4">
+                  <div class="beijingCeng_t"
+                    style=" word-wrap: break-word;  word-break: break-all;  overflow: hidden;">
+                    <div id="beijingCengBtn4"
+                      style="position: absolute;z-index: 88;right: 13px;top: 10px;color:red;width: 20px;height: 20px;">
+                      <i class="layui-icon" style="font-size: 30px;">&#x1007;</i>
+                    </div>
+                    <div class="layui-row">
+                      <div class="layui-card">
+                        <div class="layui-card-body">
+                          <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;"  >
+                              <legend><i class='layui-icon'>&#xe705;</i>审核意见</legend>
+                            </fieldset>
+                            <div  class="layui-col-xs6" style="background-color: blueviolet">
+                          <textarea rows="12" placeholder="审核意见" cols="65" id="memo2" class="el-textarea__inner2"
+                              style="border:none;"  name="memo"></textarea>
+                            </div>
+                            <div id="img2" class="layui-col-xs6 ;modal-body"   style="background-color: black;text-align: center;vertical-align: middle;overflow: auto;">
+                            </div>
+
+                            </div>
+
+                            </div>
+                               <div style="width: 100%;float: left;margin-top: 10px;margin-left: 0%;">
+                                <div class="inputStyle" style="width: 40%;float: left;">
+                                  <div class="layui-form-mid" style="width: 80px;text-align: right">审批人:</div>
+                                  <div class="layui-form-mid" id="username_ck" style="color:forestgreen"></div>
+                                </div>
+                                <div class="inputStyle" style="width: 55%;float: left;">
+                                    <div class="layui-form-mid" style="width: 80px;text-align: right">审批日期:</div>
+                                    <div class="layui-form-mid" id="sprq" style="color:forestgreen"></div>
+                                  </div>
+                               
+                              
+                              </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+    
+ 
+
+  <script src="../../assets/layui.all.js"></script>
+  <script src="../../assets/jquery.js" type="text/javascript"></script>
+  
+  <script src="./kongjianFZ/zezhaoceng.js"></script>
+  <script src="./kongjianFZ/djbhOrgwid.js"></script>
+  <script src="./kongjianFZ/jiaoyan.js"></script>
+
+  <script src="../js/_URL.js"></script>
+  <script>
+    var element = layui.element;
+    var table = layui.table;
+    var $form = layui.form;
+    var isTypebNum = 0;
+    var laydate = layui.laydate;
+    var $ = layui.$;
+    var $layer = layui.layer;
+    var DateListArr = "";
+    var userDate = JSON.parse(window.sessionStorage.getItem("userNameList"));
+    var isshow = true;
+    var url = _url();
+    var url1 = _urlJson();
+    var shopmx={};
+    var serverCode = _serverCode();
+
+    var BumenListArr = {};
+    // 订单列表数据
+    var RoleListArr = {};
+    // 选中订单数据
+    var RoleArr = {}
+    // 外边选中订单数据
+    var RoleWArr = {}
+    var RoleListWArr = {}
+   function f_updata(i) {
+      var data ="shenheren="+ userDate.userid+
+                "&event_id="+ RoleWArr.event_id+
+                "&shyj="+ $("#memo").val()+
+                "&event_state="+ i+
+                "&shtime="+timeDate(1) ;
+               // alert(data);
+                $layer.load(); 
+      $.getJSON(url +  "EventUpdata?" +data,
+        function (json) {
+      //  alert(JSON.stringify(json));
+         if (json.Response.code > 0) {
+          alert(json.Response.msg)
+            $layer.closeAll('loading');
+
+            var $input1 = document.getElementById("zezhaoceng3");
+            $input1.style.display = "none";
+
+            RoleListWDate("", "JH", $("#RoleListInput").val(), url, serverCode, "",
+              function (  date, RoleListArr1) {
+                table.render(date);
+                RoleListWArr = RoleListArr1;
+               });
+
+          } else {
+            $layer.closeAll('loading');
+            $layer.msg("没有数据", {
+              icon: 5
+            });
+            return;
+          }
+        })
+    }
+
+ 
+
+
+    
+   
+ 
+
+    layui.use(['form', 'element'], function () {
+      var form = layui.form;
+    });
+ 
+   function RoleListWXR(dataList) {
+      return {
+        elem: '#demo',
+        cols: [
+          [ //标题栏
+        {
+                field: 'code',
+                title: '编号',
+                width: 70
+              }, {
+                field: 'event_state2',
+                title: '事件状态',
+                width: 120
+              }, {
+                field: 'event_name',
+                title: '事件名称',
+                width: 140
+              }, {
+                field: 'event_type',
+                title: '事件类型',
+                width: 110
+              }, {
+                field: 'event_place',
+                title: '北纬,东经',
+                width: 170,
+                
+              }, {
+                field: 'createtime',
+                title: '创建时间',
+                width: 180,
+              }, {
+                field: 'username',
+                title: '人员名称',
+                width: 120,
+              }, {
+                field: 'value2',
+                title: '位置名称',
+                width: 300,
+              }, {
+              field: 'BtnStyle',
+              width: 80,
+              title: '操作',
+              fixed: 'right',
+            }
+          ]
+        ],
+        data: dataList,
+        skin: 'line' //表格风格
+          ,
+          height: window.innerHeight - 160 + "px",
+        even: true,
+        page: true //是否显示分页
+          ,
+        limits: [10, 20],
+        limit: 10,
+        done: function (res, page, count) {
+          var that = this.elem.next(); 
+          res.data.forEach(function (item, index) {
+
+            if (item.event_state2 == "未审核") {
+              var tr = that.find(".layui-table-box tbody tr[data-index='" + index + "']").children().eq(2).attr("onclick",
+              "search2('" + index + "')");
+              var tr = that.find(".layui-table-box tbody tr[data-index='" + index + "']").children().eq(2).css(
+                "color", "blue");
+
+              } else if (item.event_state2 == "审核通过") {
+                var tr = that.find(".layui-table-box tbody tr[data-index='" + index + "']").children().eq(2).attr("onclick",
+              "search2('" + index + "')");
+              var tr = that.find(".layui-table-box tbody tr[data-index='" + index + "']").children().eq(2).css(
+                "color", "#33FF33");
+              } else if (item.event_state2 == "审核未通过") {
+                var tr = that.find(".layui-table-box tbody tr[data-index='" + index + "']").children().eq(2).attr("onclick",
+              "search2('" + index + "')");
+              var tr = that.find(".layui-table-box tbody tr[data-index='" + index + "']").children().eq(2).css(
+                "color", "red");
+
+             }
+
+          });
+        }
+      };  table.on('toolbar(test)', function (obj) {
+        var checkStatus = table.checkStatus(obj.config.id); //获取选中行状态
+        switch (obj.event) {
+          case 'getCheckData':
+            var data = checkStatus.data; //获取选中行数据
+            layer.alert(JSON.stringify(data));
+            break;
+        };
+      });
+    }
+    function RoleListWXH(dataList) {
+      for (var i = 0; i < dataList.length; i++) {
+        dataList[i].code=(i+1);
+
+        if( dataList[i].event_state==0){
+          dataList[i].event_state2="未审核";
+          dataList[i].BtnStyle = "<div>" +
+          "<div style='float: left;padding: 0px 5px;background: #177ce3;border-radius: 2px;color: #fff;' onclick='shopListCKClick(" +
+         i + ","  +1+")'><i class='layui-icon'>&#xe642;</i>审批</div>" +
+        "</div>"
+        }else if( dataList[i].event_state==1){
+          dataList[i].event_state2="审核通过";
+          dataList[i].BtnStyle = "<div>" +
+          "<div style='float: left;padding: 0px 5px;background: #177ce3;border-radius: 2px;color: #fff;' onclick='shopListCKClick(" +
+         i +","+2+ ")'><i class='layui-icon'>&#xe705;</i>查看</div>" +
+        "</div>"
+        }else if(dataList[i].event_state==2){
+          dataList[i].event_state2="审核未通过";
+          dataList[i].BtnStyle = "<div>" +
+          "<div style='float: left;padding: 0px 5px;background: #177ce3;border-radius: 2px;color: #fff;' onclick='shopListCKClick(" +
+         i + ","  +2+")'><i class='layui-icon'>&#xe705;</i>查看</div>" +
+        "</div>"
+        }
+        if( dataList[i].event_type==0){
+          dataList[i].event_type="位置上报";
+        }else if( dataList[i].event_type==1){
+          dataList[i].event_type="货物问题";
+        }else if(dataList[i].event_type==2){
+          dataList[i].event_type="查超";
+        }else if(dataList[i].event_type==3){
+          dataList[i].event_type="异常天气";
+        }else if(dataList[i].event_type==4){
+          dataList[i].event_type="交通管制";
+        }else if(dataList[i].event_type==5){
+          dataList[i].event_type="费用";
+        }else if(dataList[i].event_type==6){
+          dataList[i].event_type="临时调度";
+        }else if(dataList[i].event_type==7){
+          dataList[i].event_type="车辆故障";
+        }else if(dataList[i].event_type==8){
+          dataList[i].event_type="堵车";
+        }
+      }
+      return RoleListWXR(dataList);
+    }
+    function shopListCKClick(index,aa) {
+      RoleWArr = RoleListWArr[index];
+      if(aa==1){
+      var $input = document.getElementById("zezhaoceng3");
+       $input.style.display = "block";
+
+       
+       //$("#img").html(" <img  height='260px' src='http://www.hndfsoft.com:5001/image/tupian/aa.jpg'/>");
+       $("#img").html(" <img height='260px' src='http://www.hndfsoft.com:5001/"+RoleWArr.imgURL+"'/>");
+       
+      }else if(aa==2){
+      //  $("#img2").html(" <img   src='http://www.hndfsoft.com:5001/image/tupian/aa.jpg'/>");
+          $("#img2").html(" <img height='260px' src='http://www.hndfsoft.com:5001/"+RoleWArr.imgURL+"'/>");
+       var $input = document.getElementById("zezhaoceng4");
+       $input.style.display = "block";
+       $("#username_ck").html(RoleWArr.shenheren);
+       
+       $("#sprq").html(RoleWArr.shtime);
+       $("#memo2").html(RoleWArr.shyj);
+      }
+   }
+
+  
+ 
+    function RoleListWDate(Staff_ID, djlx, Value1, url, serverCode, USERID, callback) {
+      $layer.load();
+
+        var data = "D_Date="+$("#S_Date").val()+"&S_Date="+$("#D_Date").val()+"&event_name="+$("#shop_name").val()+"&event_state="+$("#state").val(); //序列化表单数据 
+
+        $.getJSON(url + "eventSelect3?" + data,
+          function (json) {
+            RoleListWArr = json.Response.RDATA;
+            $layer.closeAll('loading');
+            callback(RoleListWXH(RoleListWArr), RoleListWArr);
+            return;
+          })
+    }
+
+  
+    $(document).ready(function () {
+      RoleListWDate(userDate.USERID, "JH", $("#RoleListInput").val(), url, serverCode, userDate.USERCODE, function (
+        date, RoleListArr1) {
+        table.render(date);
+        RoleListWArr = RoleListArr1;
+      });
+      //常规用法
+      laydate.render({
+      elem: '#S_Date',
+      value: timeDate_(1),
+      isInitValue: true
+    }); //常规用法
+    laydate.render({
+      elem: '#D_Date',
+      value: timeDate_(0),
+      isInitValue: true
+    });
+       
+   })
+
+   $("#qryShopListBtn").click(function(){
+   
+    RoleListWDate(userDate.USERID, "JH", $("#RoleListInput").val(), url, serverCode, userDate.USERCODE, function (
+        date, RoleListArr1) {
+        table.render(date);
+        RoleListWArr = RoleListArr1;
+      });
+      
+    });
+
+
+   
+    function timeDate_(value) {
+    var date = new Date();
+    this.year = date.getFullYear();
+    this.month = date.getMonth() + 1;
+    this.month1 = date.getMonth();
+    if(this.month1<10){
+      this.month1="0"+this.month1;
+    }
+    if(this.month<10){
+      this.month="0"+this.month;
+    }
+    this.date = date.getDate();
+    if (this.date < 10) {
+        this.date = "0" + this.date;
+      }
+    this.hour = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+    this.minute = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+    this.second = date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
+    if(value == 1){
+      return this.year + "-" + this.month + "-" + this.date;
+    }else{
+      return this.year + "-" + this.month1 + "-" + this.date;
+    }
+  }
+  </script>
+</body>
+
+</html>

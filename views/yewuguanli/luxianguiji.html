@@ -1,0 +1,423 @@
+﻿<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+  <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css" />
+  <link rel="stylesheet" href="../../assets/css/layui.css">
+  <link rel="stylesheet" href="../../assets/css/view.css" />
+  <link rel="stylesheet" href="../../assets/css/tankuang.css" />
+  <link rel="icon" href="/favicon.ico">
+  <style type="text/css">
+    #container,
+    html,
+    body {
+      height: 100%;
+      width: 92%;
+    }
+
+    .color {
+      width: 5rem;
+      height: 0.6rem;
+      display: inline-block;
+      margin: 0 1rem;
+    }
+
+    .info {
+      min-width: 10rem;
+      margin-right: 25%;
+    }
+
+    #xuanzheKuang {
+      width: 23%;
+      float: right;
+      height: 102%;
+      position: fixed;
+      background: #ffffff;
+      right: 0;
+      z-index: 600;
+      top: 0;
+    }
+  </style>
+  <title>驾车轨迹纠偏</title>
+</head>
+
+<body>
+  <div id="container" tabindex="0"></div>
+  <div id="xuanzheKuang" tabindex="0" style="overflow-y:auto;">
+
+    <div style="width: 100%;height:auto;float:left;margin-top: 0px;">
+
+      <blockquote class="layui-elem-quote" style="font-size: 16px">
+        查询数据
+      </blockquote>
+    </div>
+    <div style="width: 100%;height:auto;float:left">
+      <div class="layui-inline" style="margin-right: -10px;margin-left: 20px;float: left;margin-top: 10px;">
+        <label class="layui-form-label" style="width:auto">查看定位时间:</label>
+        <div class="layui-input-inline" style="width:120px">
+          <input type="text" class="layui-input" id="S_Date" placeholder="yyyy-MM-dd">
+        </div>
+      </div>
+    </div>
+    <div style="width: 100%;height: auto;float:left">
+      <label class="layui-form-label" style="width:auto;margin-left: 20px;">过滤人员信息:</label>
+      <div class="layui-input-inline" style="width: 120px;">
+        <input type="text" autocomplete="off" class="layui-input" id="u_name">
+      </div>
+    </div>
+    <div style="width: 100%;height: auto;float:left">
+      <label class="layui-form-label" style="width:auto;margin-left: 20px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 运单号:</label>
+      <div class="layui-input-inline" style="width: 120px;">
+        <input type="text" autocomplete="off" class="layui-input" id="ydh">
+      </div>
+    </div>
+    <div style="width: 100%;height:auto;float:left">
+      <button class="layui-btn layui-btn-blue" style="width: 20%;margin-top:10px;margin-left: 35px;"
+        id="qryShopListBtn">查询</button>
+    </div>
+    <div style="width: 100%;height:auto;float:left;margin-top: 30px;">
+
+      <blockquote class="layui-elem-quote" style="font-size: 16px">
+        操作数据
+      </blockquote>
+    </div>
+    <div style="width: 80%;height:auto;float:left;margin-left: 10%;">
+      <table id="demo"></table>
+    </div>
+
+
+    <div style="width: 100%;height:auto;float:left;margin-top: 5px;">
+
+      <blockquote class="layui-elem-quote" style="font-size: 16px">
+        详细信息
+      </blockquote>
+    </div>
+    <div style="width: 100%;height:auto;float:left;margin-top: 0px;"  >
+
+      <div style="width: auto;margin-top:10px;margin-left: 35px;font-size: 15px;color: #ccc">
+        司机姓名: <span id="userName"></span>
+      </div>
+
+      <div style="width: auto;margin-top:10px;margin-left: 35px;font-size: 15px;color: #ccc">
+        手机号: <span id="userPhone"></span>
+      </div>
+
+      <div style="width: auto;margin-top:10px;margin-left: 35px;font-size: 15px;color: #ccc">
+        运单号: <span id="userysId"></span>
+      </div>
+
+      <div style="width: auto;margin-top:10px;margin-left: 35px;font-size: 15px;color: #ccc">
+        车辆信息: <span id="carName"></span>
+      </div>
+
+      <div style="width: auto;margin-top:10px;margin-left: 35px;font-size: 15px;color: #ccc">
+        车辆类型: <span id="carType"></span>
+      </div>
+
+
+      <div style="width: auto;margin-top:10px;margin-left: 35px;font-size: 15px;color: #ccc">
+        运单状态: <span id="orderType" style="color:blue"></span>
+      </div>
+    </div>
+
+
+  </div>
+  <div class="info">
+    纠偏前:<div class='color' style='background-color:red'></div><br>
+    纠偏后:<div class='color' style='background-color:#0091ea'></div>
+  </div>
+ 
+  <script language="javascript" src="./kongjianFZ/gaode.js"></script>
+  <script src="../../assets/layui.all.js"></script>
+  <script src="../yewuguanli/kongjianFZ/djbhOrgwid.js"></script>
+  <script src="./js/jqydata.js"></script>
+  <script src="../yewuguanli//kongjianFZ/zezhaoceng.js"></script>
+  <script language="javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=1a335df4d12b9fe5bbbc44a0e39eccc6&plugin=AMap.GraspRoad"></script>
+  <script src="../js/_URL.js"></script>
+  <script type="text/javascript">
+    var element = layui.element;
+    var table = layui.table;
+    var $form = layui.form;
+    var isTypebNum = 0;
+    var laydate = layui.laydate;
+    var $ = layui.$;
+    var $layer = layui.layer;
+    var DateListArr = "";
+    var userDate = JSON.parse(window.sessionStorage.getItem("userNameList"));
+    var isshow = true;
+    var url = _url();
+    var url1 = _urlJson();
+    var serverCode = _serverCode();
+    var VisitListWArr = [];
+
+    function bibao(index) {
+      return function (e) {
+        alert(1);
+      }
+    }
+
+    function RoleListWXR(dataList) {
+      return {
+        elem: '#demo',
+        cols: [
+          [ //标题栏
+            {
+              field: 'ys_id',
+              title: '运单号',
+              width: 120
+            }, {
+              field: 'username',
+              title: '司机名称',
+              width: 120
+            }, {
+              field: 'car_code',
+              title: '车辆信息',
+              width: 120
+            }
+          ]
+        ],
+        data: dataList,
+        skin: 'line' //表格风格
+        ,
+        even: true,
+        page: true //是否显示分页
+        ,
+        limits: [5, 20],
+        limit: 5,
+        done: function (res, page, count) {
+          var that = this.elem.next();
+          //alert(JSON.stringify(res))
+
+          console.log(that);
+          res.data.forEach(function (item, index) {
+            bibao(index);
+            console.log(index);
+            var tr = that.find(".layui-table-box tbody tr[data-index='" + index + "']").attr("onclick",
+              "search2('" + index + "')");
+
+          });
+        }
+      };
+    }
+
+
+
+    function RoleListWXH(dataList) {
+      for (var i = 0; i < dataList.length; i++) {
+        dataList[i].code = (i + 1);
+        dataList[i].BtnStyle = "<div>" +
+          "<div style='float: left;padding: 0px 5px;background: #177ce3;border-radius: 2px;color: #fff;' onclick = 'RoleListWClick(" +
+          i + ")'><i class='layui-icon'>&#xe642;</i></div>" +
+          "<div style='margin-left:10px;float: left;padding: 0px 5px;background: red;border-radius: 2px;color: #fff;' onclick = 'RoleListWDClick(" +
+          i + ")'><i class='layui-icon'>&#xe640;</i></div>" +
+          "</div>"
+      }
+      return RoleListWXR(dataList);
+    }
+
+    function RoleListWDate() {
+      var data = "createtime=" + $("#S_Date").val()
+      +"&username="+$("#u_name").val()
+      +"&ys_id="+$("#ydh").val(); //序列化表单数据 \
+      
+      $.getJSON(url + "getTran?" + data,
+        function (json) {
+          VisitListWArr = json.Response.RDATA;
+          let str = RoleListWXH(VisitListWArr);
+          table.render(str);
+          return;
+        })
+    }
+
+    function search2(index) {
+      $("#userName").html(VisitListWArr[index].username);
+      $("#userPhone").html(VisitListWArr[index].userPhone);
+      $("#userysId").html(VisitListWArr[index].ys_id);
+      $("#carName").html(VisitListWArr[index].car_code);
+      $("#carType").html(VisitListWArr[index].car_type);
+      if (VisitListWArr[index].ys_type == '0') {
+        $("#orderType").html("运输中");
+        $("#orderType").css("color", "#cccccc");
+      } else {
+        $("#orderType").html("运输结束");
+        $("#orderType").css("color", "blue");
+      }
+      // $.getJSON(url + "Ydmxselect?ys_id=" + VisitListWArr[index].ys_id,
+      //   function (json) {
+      //     let dingweiArr = json.Response.RDATA;
+      //     ceshiJWD1(dingweiArr);
+      //   })
+      // return;
+      $.getJSON(url + "DingWeiSelect?Userid=" + VisitListWArr[index].userid+"&ys_id="+VisitListWArr[index].ys_id,
+        function (json) {
+          let dingweiArr = json.Response.RDATA;
+
+          dingweiArrPJ(dingweiArr);
+          return;
+        })
+
+    }
+
+    function ceshiJWD1(dingweiArr) {
+      let path = [];
+      // for (let i in dingweiArr) {
+      //       let strJW = dingweiArr[i].shrJd+","+dingweiArr[i].shrWd;
+      //       path.push(strJW);
+      //     }
+
+      ceshijuli(dingweiArr);
+    }
+
+    function dingweiArrPJ(dingweiArr) {
+      let arr = []
+      for (let i in dingweiArr) {
+        let arrpg = {};
+        // if(i== 0){
+        //   arrpg.x = Number("116.478928");
+        //   arrpg.y = Number("39.997761");
+        //   arrpg.sp = Number("19");
+        //   arrpg.ag = Number("0");
+        //   arrpg.tm = Number("1478031031");
+        // }else{
+        arrpg.x = Number(dingweiArr[i].jingdu);
+        arrpg.y = Number(dingweiArr[i].weidu);
+        arrpg.tm = Number(i);
+        arrpg.sp = Number("10");
+        arrpg.ag = 0;
+        // }
+
+        arr.push(arrpg)
+      }
+      
+      let arr1 = [{ "x": 116.478928, "y": 39.997761, "sp": 19, "ag": 0, "tm": 1478031031 },
+      { "x": 116.479384, "y": 39.998546, "sp": 10, "ag": 110, "tm": 3 },
+      { "x": 116.481053, "y": 39.998204, "sp": 10, "ag": 120, "tm": 4 },
+      { "x": 116.481793, "y": 39.997868, "sp": 10, "ag": 120, "tm": 5 },
+      { "x": 116.482898, "y": 39.998217, "sp": 10, "ag": 30, "tm": 6 },
+      { "x": 116.483789, "y": 39.999063, "sp": 10, "ag": 30, "tm": 7 },
+      { "x": 116.484674, "y": 39.999844, "sp": 10, "ag": 30, "tm": 8 }]
+
+      console.log(arr)
+
+      console.log("123")
+      console.log(arr1)
+      dingweiGJ(arr)
+      // ceshijuli();
+    }
+    function ceshijuli(dingweiArr) {
+      alert(1);
+
+      //基本地图加载
+      map = new AMap.Map("container", {
+        resizeEnable: true
+      });
+      var path12 = [];
+      path12.push([116.303843, 39.983412]);
+      path12.push([116.321354, 39.896436]);
+      path12.push([116.407012, 39.992093]);
+      //绘制初始路径
+      let path = [];
+      for (let i in dingweiArr) {
+        let arr = [];
+        
+        // let strJW = "["+dingweiArr[i].shrJd+","+dingweiArr[i].shrWd+"]";
+        arr.push(dingweiArr[i].shrJd);
+        arr.push(dingweiArr[i].shrWd);
+        path.push(arr);
+      }
+      console.log(path)
+      console.log(path12)
+      map.plugin("AMap.DragRoute", function () {
+        route = new AMap.DragRoute(map, path, AMap.DrivingPolicy.LEAST_FEE); //构造拖拽导航类
+        route.search(); //查询导航路径并开启拖拽导航
+      });
+    }
+    function dingweiGJ(arr) {
+
+      var map = new AMap.Map('container', {
+        resizeEnable: true
+      });
+      var graspRoad;
+      var pathParam = arr;
+
+      var path1 = [];
+      for (var i = 0; i < pathParam.length; i += 1) {
+        path1.push([pathParam[i].x, pathParam[i].y])
+      }
+      console.log(path1)
+      var oldLine = new AMap.Polyline({
+        path: path1,
+        strokeWeight: 8,
+        strokeOpacity: 1,
+        strokeColor: 'red'
+      })
+      map.add(oldLine)
+      if (!graspRoad) {
+        graspRoad = new AMap.GraspRoad()
+      }
+      graspRoad.driving(pathParam, function (error, result) {
+        if (!error) {
+          var path2 = [];
+          var newPath = result.data.points;
+
+          for (var i = 0; i < newPath.length; i += 1) {
+            path2.push([newPath[i].x, newPath[i].y])
+          }
+          console.log(path2)
+          var newLine = new AMap.Polyline({
+            path: path2,
+            strokeWeight: 8,
+            strokeOpacity: 0.8,
+            strokeColor: '#0091ea',
+            showDir: true
+          })
+          map.add(newLine)
+          map.setFitView()
+        }
+      })
+    }
+
+
+    laydate.render({
+      elem: '#S_Date',
+      value: timeDate1(1),
+      isInitValue: true
+    });
+
+    $("#qryShopListBtn").click(function () {
+      RoleListWDate();
+    })
+
+    function init() {
+
+      laydate.render({
+        elem: '#S_Date',
+        value: timeDate1(1),
+        isInitValue: true
+      });
+      setTimeout(function () {
+        RoleListWDate();
+      }, 200);
+    }
+    map = new AMap.Map('container', {
+            center: ["113.769214", "34.718978"],
+            layers: [
+                // 卫星
+                new AMap.TileLayer.Satellite(),
+                // 路网
+                new AMap.TileLayer.RoadNet()
+            ],
+            zoom: 13
+        });
+    init();
+
+
+
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,108 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>两点间距离</title>
+     <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css" />
+    <style>
+        html,body,#container{
+            height:100%;
+        }
+    </style>
+</head>
+<body>
+<div id="container"></div>
+<div class='info' style='min-width:15rem;'>可拖动Marker调整位置</div>
+ <script language="javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=1a335df4d12b9fe5bbbc44a0e39eccc6&plugin=AMap.GraspRoad"></script>
+ <script src="assets/layui.js"></script>
+    
+    <script src="./views/js/_URL.js" data-main="home"></script>
+   <script type="text/javascript">
+
+var $ = layui.$;
+            var $layer = layui.layer;
+            var DateListArr = [];
+            var fuCDArr = [];
+            var zhiCDArr = [];
+            var url = _url();
+            var serverCode = _serverCode();
+            var userDate = "";
+            var gonggao  = "";
+            var createDate_GG = "";
+    //初始化地图对象，加载地图
+    var map = new AMap.Map("container", {
+        resizeEnable: true,
+        zoom: 13
+    });
+    var m1 = new AMap.Marker({
+        map: map,
+        draggable:true,
+        position: new AMap.LngLat(116.368904, 39.923423)
+    });
+    var m2 = new AMap.Marker({
+        map: map,
+        draggable:true,
+        position:new AMap.LngLat(116.387271, 39.922501)
+		     
+    });
+    map.setFitView();
+    
+    var line,text;
+    function computeDis(){
+        var p1 = m1.getPosition();
+        var p2 = m2.getPosition();
+        var textPos = p1.divideBy(2).add(p2.divideBy(2));
+        var distance = Math.round(p1.distance(p2));
+        var path = [p1,p2];
+        if(!line){
+            line = new AMap.Polyline({
+           		map:map,
+              	strokeColor:'#80d8ff',
+              	isOutline:true,
+              	outlineColor:'white',
+                path:path
+            });
+        }else{
+            line.setPath(path);
+        }
+        if(!text){
+			console.log(distance)
+            text = new AMap.Text({
+              	text:'两点相距'+distance+'米',
+                position: textPos,
+                map:map,
+              	style:{'background-color':'#29b6f6',
+        				'border-color':'#e1f5fe',
+        				'font-size':'12px'}
+            })
+        }else{
+			 
+			 console.log(distance)
+            text.setText('两点相距'+distance+'米')
+            text.setPosition(textPos)
+        }
+    }
+    computeDis();
+    m1.on('dragging', computeDis)
+    m2.on('dragging', computeDis)
+    RoleListWDate();
+
+    function RoleListWDate() {
+    
+      var data = ""; //序列化表单数据 
+       $.getJSON(url + "yundanselect?" + data,
+          function (json) {
+            RoleListWArr = json.Response.RDATA;
+         alert(JSON.stringify(RoleListWArr))
+          
+            return;
+          })
+    }
+
+
+
+</script>
+</body>
+</html>

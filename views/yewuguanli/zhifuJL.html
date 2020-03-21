@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" href="../../assets/css/layui.css">
+  <link rel="stylesheet" href="../../assets/css/view.css" />
+  <link rel="stylesheet" href="../../assets/css/tankuang.css" />
+  <link rel="icon" href="/favicon.ico">
+  <title>支付管理</title>
+  <style>
+  </style>
+</head>
+
+<body class="layui-view-body">
+  <div class="layui-row">
+
+    
+    <div class="layui-content">
+      <div class="layui-row">
+        <div class="layui-card">
+          <div class="layui-card-body">
+            <div class="form-box">
+               
+              <div class="layui-form layui-form-item" >
+                  <div class="layui-col-xs2" style="margin-right: -10px;float: left;">
+                      <label class="layui-form-label" style="width:auto">开始时间:</label>
+                      <div class="layui-input-inline" style="width:120px">
+                        <input type="text" class="layui-input" id="D_Date" placeholder="yyyy-MM-dd">
+                      </div>
+                    </div>
+            
+                    <div class="layui-col-xs2" style="float: left;">
+                      <label class="layui-form-label" style="width:auto">结束时间:</label>
+                      <div class="layui-input-inline" style="width:120px">
+                        <input type="text" class="layui-input" id="S_Date"    placeholder="yyyy-MM-dd">
+                      </div>
+                    </div>
+
+                    <div id="kanjianBox">
+
+                      
+                    </div>
+
+              </div>
+              <table id="demo"></table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="rongqi1">
+
+      </div>
+    </div>
+    <script src="../../assets/layui.all.js"></script>
+  
+    <script src="./kongjianFZ/zezhaoceng.js"></script>
+     <script src="./kongjianFZ/tableZDY1.js"></script>
+    <script src="./kongjianFZ/ziJianFZ.js"></script>  
+
+    <script src="../js/_URL.js"></script>
+    <script>
+      var table = layui.table;
+      var $ = layui.$;
+      var url = _url();
+      var isshow = true;
+      var url1 = _urlJson();
+      var serverCode = _serverCode();
+      let listDate = "";
+      var laydate = layui.laydate;
+
+      let dataListTC = {
+        after_sale_id: { "title": "支付流水", "disable": true, "width": 180, "sort": true, "background": "#009688", "color": "#fff" },
+        ddcode: { "title": "订单ID", "disable": true, "width": 150, "sort": true, "background": "", "color": "" },
+        ydcode: { "title": "运单ID", "disable": true, "width": 170, "sort": true, "background": "", "color": "" },
+        createtime: { "title": "支付时间", "disable": true, "width": 180, "sort": true, "background": "", "color": "" },
+        ys_money: { "title": "应付金额", "disable": true, "width": 100, "sort": true, "background": "", "color": "" },
+        payment_type: { "title": "支付方式", "disable": true, "width": 100, "sort": true, "background": "", "color": "" },
+        ss_money: { "title": "实付金额", "disable": true, "width": 100, "sort": true, "background": "", "color": "" },
+        sj_name: { "title": "司机名称", "disable": true, "width": 100, "sort": true, "background": "", "color": "" },
+        userName: { "title": "分配人员", "disable": true, "width": 100, "sort": true, "background": "", "color": "" },
+        userPhone: { "title": "联系方式", "disable": true, "width": 150, "sort": true, "background": "", "color": "" },
+      }
+
+      function shopListCKClick1(index) {
+        $("#dowmBox").empty();
+        let InputStyleMy2 = inputStyle1("支付流水", "tijiaoshuju1", "请输入过滤条件", listDate[index].after_sale_id);
+        let InputStyleMy3 = inputStyle1("支付时间", "tijiaoshuju2", "请输入过滤条件", listDate[index].createtime);
+        let InputStyleMy4 = inputStyle1("应付金额", "tijiaoshuju3", "请输入过滤条件", listDate[index].ys_money);
+        let InputStyleMy5 = inputStyle1("支付方式", "tijiaoshuju4", "请输入过滤条件", listDate[index].payment_type);
+        let InputStyleMy6 = inputStyle1("分配人员", "tijiaoshuju5", "请输入过滤条件", listDate[index].userName);
+        let InputStyleMy7 = inputStyle1("实付金额", "tijiaoshuju6", "请输入过滤条件", listDate[index].ss_money);
+        let InputStyleMy8 = inputStyle1("订单ID", "tijiaoshuju7", "请输入过滤条件", listDate[index].ddcode);
+        let InputStyleMy9 = inputStyle1("运单ID", "tijiaoshuju8", "请输入过滤条件", listDate[index].ydcode);
+        let InputStyleMy10 = inputStyle1("收款人员", "tijiaoshuju9", "请输入过滤条件", listDate[index].sj_name);
+        let InputStyleMy11 = inputStyle1("联系电话", "tijiaoshuju10", "请输入过滤条件", listDate[index].userPhone);
+        let ButtonStyleMy3 = ButtonStyle("修改信息", 0, "", "ceshiBtn2");
+        $(InputStyleMy8 + InputStyleMy9 + InputStyleMy2 + InputStyleMy3 + InputStyleMy4 + InputStyleMy5 + InputStyleMy6 + InputStyleMy7 + InputStyleMy10 + InputStyleMy11 + ButtonStyleMy3).appendTo("#dowmBox");
+        var $input = document.getElementById("zezhaoceng4");
+        $input.style.display = "block";
+      }
+
+      function ceshiBtn2(){
+        var data = "id="+$("#tijiaoshuju1").val()+
+                    "&je="+$("#tijiaoshuju3").val()+
+                    "&type="+$("#tijiaoshuju4").val()+
+                    "&state="+$("#tijiaoshuju5").val()+
+                    "&ycje="+$("#tijiaoshuju6").val()
+        $GetJson(data, "Payupdate", function (date) {
+          $layer.msg('修改成功', {icon: 6});
+          setTimeout(function () {
+            window.location.reload()
+          }, 1000);
+         
+        });
+      }
+
+      function shopListCKClick2(index) {
+        if (!window.confirm("确认删除<"+listDate[index].after_sale_id+">订单吗?")) {
+          return;
+        }
+        var data = "after_sale_id="+listDate[index].after_sale_id;
+        $GetJson(data, "After_saleDelete", function (date) {
+          $layer.msg('删除成功', {icon: 6});
+          init();
+        });
+      }
+      function ceshiBtn() {
+        RoleListWDate();
+      //  alert("过滤条件:" + $("#guolutiaojian").val())
+      };
+
+      function RoleListWDate() {
+        var data = "ddcode="+$("#guolutiaojian").val()+"&i_statesj="+$("#D_Date").val() +"&i_endsj="+$("#S_Date").val()  ; //序列化表单数据 ;
+        $GetJson(data, "After_sale_", function (date) {
+          listDate = date;
+          let dateListM = xuliehuaArr(date, true, 2, [2, "shopListCKClick1", "&#xe705;", "测试"], [3, "shopListCKClick2", "", ""], dataListTC, false, "#demo");
+          table.render(dateListM);
+        });
+      }
+
+      function init() {
+        // let zzc = zezhaochengBox("zezhaoceng4","kanjianBox1","demo1");
+        // $(zzc).appendTo("#rongqi1");
+        // RoleListWDate1();
+        // $(InputStyleMy2 + ButtonStyleMy3).appendTo("#kanjianBox1");
+       laydate.render({
+        elem: '#S_Date',
+        value: timeDate_(1),
+        isInitValue: true
+      }); //常规用法
+
+       laydate.render({
+        elem: '#D_Date',
+        value: timeDate_(0),
+        isInitValue: true
+      });
+       // $("#kanjianBox").empty();
+        let zzc = zezhaochengBox1("zezhaoceng4", "支付详情", "dowmBox");
+        $(zzc).appendTo("#rongqi1");
+        let InputStyleMy = inputStyle("过滤条件", "guolutiaojian", "请输入过滤条件");
+        let ButtonStyleMy1 = ButtonStyle("查询按钮", 0, "", "ceshiBtn");
+        $(InputStyleMy + ButtonStyleMy1).appendTo("#kanjianBox");
+
+        RoleListWDate();
+  }
+      init();
+
+      function timeDate_(value) {
+      var date = new Date();
+      this.year = date.getFullYear();
+      this.month = date.getMonth() + 1;
+      this.month1 = date.getMonth();
+      if (this.month1 < 10) {
+        this.month1 = "0" + this.month1;
+      }
+      if (this.month < 10) {
+        this.month = "0" + this.month;
+      }
+      this.date = date.getDate();
+      if (this.date < 10) {
+        this.date = "0" + this.date;
+      }
+      this.hour = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+      this.minute = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+      this.second = date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
+      if (value == 1) {
+        return this.year + "-" + this.month + "-" + this.date;
+      } else {
+        return this.year + "-" + this.month1 + "-" + this.date;
+      }
+    }    
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../assets/css/layui.css">
+    <link rel="stylesheet" href="../../assets/css/view.css" />
+    <link rel="stylesheet" href="../../assets/css/tankuang.css" />
+    <link rel="icon" href="/favicon.ico">
+    <title>单位证照预警</title>
+</head>
+
+<body class="layui-view-body">
+    <div class="layui-content">
+        <div class="layui-page-header">
+            <div class="pagewrap">
+                <span class="layui-breadcrumb">
+                    <a href="">首页</a>
+                    <a href="">数据中心</a>
+                    <a><cite>单位证照预警</cite></a>
+                </span>
+            </div>
+        </div>
+        <div class="layui-row">
+            <div class="layui-card">
+                <div class="layui-card-body">
+                    <div class="form-box">
+                        <div class="layui-form layui-form-item">
+                            <div class="layui-inline">
+                                <!-- <div class="layui-inline" style="margin-right: -10px;float: left;">
+                                    <label class="layui-form-label" style="width:auto">开始时间:</label>
+                                    <div class="layui-input-inline" style="width:120px">
+                                        <input type="text" class="layui-input" id="S_Date" placeholder="yyyy-MM-dd">
+                                    </div>
+                                </div>
+
+                                <div class="layui-inline" style="float: left;">
+                                    <label class="layui-form-label" style="width:auto">结束时间:</label>
+                                    <div class="layui-input-inline" style="width:120px">
+                                        <input type="text" class="layui-input" id="D_Date" placeholder="yyyy-MM-dd">
+                                    </div>
+                                </div> -->
+                                <div class="layui-form-mid">过滤条件:</div>
+                                <div class="layui-input-inline" style="width: 120px;">
+                                    <input type="text" autocomplete="off" class="layui-input" id="qrySHopData">
+                                </div>
+
+
+                                <button class="layui-btn layui-btn-blue" id="qryShopListBtn">查询</button>
+                            </div>
+                        </div>
+                        <table id="demo"></table>
+
+                        <!-- 遮罩层1 公司名称弹框 -->
+                        <div class="zezhaoceng" id="zezhaoceng">
+                            <div class="beijingCeng">
+                                <div id="beijingCengBtn" style="position: absolute;z-index: 88;right: 13px;top: 10px;color:red;width: 20px;height: 20px;">
+                                    <i class="layui-icon" style="font-size: 30px;">&#x1007;</i>
+                                </div>
+                                <div class="layui-row">
+                                    <div class="layui-card">
+                                        <div class="layui-card-body">
+                                            <div class="form-box">
+                                                <div class="layui-form layui-form-item">
+                                                    <div class="layui-inline">
+                                                        <p>单位信息</p>
+                                                        <div class="inputStyle">
+                                                            <div class="layui-form-mid">单位编码:</div>
+                                                            <div class="layui-input-inline" style="width: 180px;">
+                                                                <input id="danwbh_zj" type="text" autocomplete="off"
+                                                                    value="" class="layui-input" readonly="readonly">
+                                                            </div>
+                                                        </div>
+                                                        <div class="inputStyle">
+                                                            <div class="layui-form-mid">单位名称:</div>
+                                                            <div class="layui-input-inline" style="width: 200px;">
+                                                                <input id="dwmch_zj" type="text" autocomplete="off"
+                                                                    value="" class="layui-input" readonly="readonly">
+                                                            </div>
+                                                        </div>
+                                                        <div class="inputStyle">
+                                                            <div class="layui-form-mid">客商类别:</div>
+                                                            <div class="layui-input-inline" style="width: 120px;">
+                                                                <input id="kehufl_zj" type="text" autocomplete="off"
+                                                                    value="" class="layui-input" readonly="readonly">
+                                                            </div>
+                                                        </div>
+                                                        <div class="inputStyle">
+                                                            <div class="layui-form-mid">是否进货:</div>
+                                                            <div class="layui-input-inline" style="width: 120px;">
+                                                                <input type="text" id="isjh_zj" autocomplete="off"
+                                                                    class="layui-input" readonly="readonly">
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="inputStyle">
+                                                            <div class="layui-form-mid">是否销售:</div>
+                                                            <div class="layui-input-inline" style="width: 120px;">
+                                                                <input type="text" id="isxs_zj" autocomplete="off"
+                                                                    value="DF024654" class="layui-input" readonly="readonly">
+                                                            </div>
+                                                        </div>
+                                                        <div class="inputStyle">
+                                                            <div class="layui-form-mid">单位地址:</div>
+                                                            <div class="layui-input-inline" style="width: 200px;">
+                                                                <input type="text" id="dzhdh_zj" autocomplete="off"
+                                                                    value="DF024654" class="layui-input" readonly="readonly">
+                                                            </div>
+                                                        </div>
+
+
+                                                        <!-- <button class="layui-btn layui-btn-blue">查询</button>
+                                                        <button class="layui-btn layui-btn-primary">重置</button> -->
+                                                    </div>
+                                                </div>
+                                                <table id="demo1"></table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../../assets/layui.all.js"></script>
+    <script src="../yewuguanli/kongjianFZ/djbhOrgwid.js"></script>
+    <script src="./js/jqydata.js"></script>
+    <script src="../js/_URL.js"></script>
+    <script src="../yewuguanli//kongjianFZ/zezhaoceng.js"></script>
+    <script>
+        var element = layui.element;
+        var table = layui.table;
+        var form = layui.form;
+        var $ = layui.$;
+        var $layer = layui.layer;
+        var laydate = layui.laydate;
+        var QRYShopListArr = [];
+        var QRYShopListArr_D = [];
+        var userDate = "";
+        var url = _url();
+        var serverCode = _serverCode();
+
+
+        //展示已知数据
+        $("#qryShopListBtn").click(function () {
+            qryZJDate(userDate.UserID, "Qry_zjdwhz", "", "", $(
+                    "#qrySHopData").val(), url, serverCode,
+                function (date,
+                    ShopListArr1) {
+                    table.render(date);
+                    QRYShopListArr = ShopListArr1;
+                });
+        })
+
+        function fuzhi() {
+            $("#danwbh_zj").val(QRYShopListArr_D.danwbh);
+            $("#dwmch_zj").val(QRYShopListArr_D.dwmch);
+            $("#kehufl_zj").val(QRYShopListArr_D.kehufl);
+            $("#isjh_zj").val(QRYShopListArr_D.isjh);
+            $("#isxs_zj").val(QRYShopListArr_D.isxs);
+            $("#dzhdh_zj").val(QRYShopListArr_D.dzhdh);
+        }
+
+
+        function shopList_ZJClick(index) {
+            QRYShopListArr_D = QRYShopListArr[index]
+            fuzhi();
+            var $input = document.getElementById("zezhaoceng");
+            $input.style.display = "block";
+            zjxq_ShopListDateils(userDate.UserID, "Qry_zjdwmx", QRYShopListArr_D.dwbh, url, serverCode, function (
+                date,
+                ShopListArr1) {
+                table.render(date);
+            });
+        }
+        // //常规用法
+        // laydate.render({
+        //     elem: '#S_Date',
+        //     value: timeDate1(0),
+        //     isInitValue: true
+        // }); //常规用法
+        // laydate.render({
+        //     elem: '#D_Date',
+        //     value: timeDate1(1),
+        //     isInitValue: true
+        // });
+
+        function init() {
+            userDate = JSON.parse(window.sessionStorage.getItem("userNameList"));
+        }
+        init();
+    </script>
+</body>
+
+</html>

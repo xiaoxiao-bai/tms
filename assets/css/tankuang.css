@@ -1,0 +1,211 @@
+.inputStyle{
+    float: left;
+    margin:2px 5px;
+  }
+  .zezhaoceng{
+    display: none;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    position: fixed;
+    z-index: 6000;
+    top:0;
+    left: 0;
+  }
+  .zezhaoceng1{
+    display: none;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    position: fixed;
+    z-index: 6000;
+    top:0;
+    left: 0;
+  }
+  .zezhaoceng2{
+    display: none;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    position: fixed;
+    z-index: 6000;
+    top:0;
+    left: 0;
+  }
+  .zezhaoceng3{
+    word-wrap: break-word;
+    word-break: break-all;
+    overflow: hidden;
+    display: none;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    position: fixed;
+    z-index: 6000;
+    top:0;
+    left: 0;
+  }
+  .zezhaoceng4{
+    display: none;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    position: fixed;
+    z-index: 6000;
+    top:0;
+    left: 0;
+  }
+  .zezhaoceng5{
+    display: none;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    position: fixed;
+    z-index: 6000;
+    top:0;
+    left: 0;
+  }
+  .zezhaoceng6{
+    display: none;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    position: fixed;
+    z-index: 6000;
+    top:0;
+    left: 0;
+  }
+  
+  .beijingCeng{
+    width: 80%;
+    margin-left: 10%;
+    height: 400px;
+    position: fixed;
+    top: 50%;
+    margin-top: -200px;
+    background: #fff;
+    border-radius: 10px;
+    overflow: scroll;
+  }
+  .beijingCeng1{
+    word-wrap: break-word;
+    word-break: break-all;
+    overflow: hidden;
+    width: 40%;
+    margin-left: 30%;
+    height: 240px;
+    position: fixed;
+    top: 50%;
+    margin-top: -120px;
+    background: #fff;
+    border-radius: 10px;
+    overflow: scroll;
+  }
+  .beijingCeng2{
+    width: 60%;
+    margin-left: 20%;
+    height: 400px;
+    position: fixed;
+    top: 50%;
+    margin-top: -200px;
+    background: #fff;
+    border-radius: 10px;
+    overflow: scroll;
+  }
+  .beijingCeng3{
+    word-wrap: break-word;
+    word-break: break-all;
+    overflow: hidden;
+    width: 70%;
+    margin-left: 15%;
+    height: 400px;
+    position: fixed;
+    top: 50%;
+    margin-top: -200px;
+    background: #fff;
+    border-radius: 10px;
+    overflow: scroll;
+  }
+
+ 
+  .beijingCeng4{
+    width: 50%;
+    margin-left: 25%;
+    height: 400px;
+    position: fixed;
+    top: 50%;
+    margin-top: -200px;
+    background: #fff;
+    border-radius: 10px;
+    overflow: scroll;
+  }
+  .beijingCeng44{
+    width: 50%;
+    margin-left: 25%;
+    height: 100px;
+    position: fixed;
+    top: 50%;
+    margin-top: -200px;
+    background: #fff;
+    border-radius: 10px;
+    overflow: scroll;
+  }
+  .beijingCeng5{
+    width: 80%;
+    margin-left: 8%;
+    height: 420px;
+    position: fixed;
+    top: 50%;
+    margin-top: -240px;
+    background: #fff;
+    border-radius: 10px;
+    overflow: scroll;
+    padding: 30px;
+  }
+  
+  .beijingCeng6{
+    width: 40%;
+    margin-left: 30%;
+    height: 240px;
+    position: fixed;
+    top: 50%;
+    margin-top: -120px;
+    background: #fff;
+    border-radius: 10px;
+    overflow: scroll;
+  }
+  .shopBoxW{
+    width: 50%;
+    float: left;
+    margin-left: 20px;
+  }
+  .beijingCeng::-webkit-scrollbar {
+      display: none;
+  }
+  .beijingCeng1::-webkit-scrollbar {
+      display: none;
+  }
+  .beijingCeng2::-webkit-scrollbar {
+      display: none;
+  }
+  .beijingCeng3::-webkit-scrollbar {
+      display: none;
+  }
+  .beijingCeng4::-webkit-scrollbar {
+      display: none;
+  }
+  .beijingCeng5::-webkit-scrollbar {
+      display: none;
+  }
+  .beijingCeng6::-webkit-scrollbar {
+      display: none;
+  }
+  
+  .shuaxinYenmian{
+    float:right;
+    border: 1px solid #dadada;
+    padding: 0.3rem 0.6rem;
+    border-radius: 5px;
+    margin-top: -0.3rem;
+    color:#999;
+  }

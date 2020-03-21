@@ -1,0 +1,480 @@
+﻿<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+  <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css" />
+  <link rel="stylesheet" href="../../assets/css/layui.css">
+  <link rel="stylesheet" href="../../assets/css/view.css" />
+  <link rel="stylesheet" href="../../assets/css/tankuang.css" />
+  <link rel="icon" href="/favicon.ico">
+    <style>
+         .column {
+            overflow: hidden;
+        }
+ 
+        .column-left {
+            height: 1000px;
+            background-color: #fff;
+            position: relative;
+            float: left;
+        }
+ 
+        .column-right {
+            height: 100%;
+            padding: 16px;
+            background-color: #eee;
+            box-sizing: border-box;
+            overflow: hidden;
+            
+        }
+ 
+        .resize-save {
+            position: absolute;
+            top: 0;
+            right: 5px;
+            bottom: 0;
+            left: 0;
+            padding: 16px;
+            overflow-x: hidden;
+        }
+ 
+        .resize-bar {
+            width: 800px;
+            height: inherit;
+            resize: horizontal;
+            cursor: ew-resize;
+            opacity: 0;
+            overflow: scroll;
+        }
+ 
+        /* 拖拽线 */
+        .resize-line {
+            position: absolute;
+            right: 50px;
+            top: 0;
+            bottom: 0;
+            border-right: 10px solid #eee;
+            border-left: 10px solid #bbb;
+            pointer-events: none;
+        }
+ 
+        .resize-bar:hover~.resize-line,
+        .resize-bar:active~.resize-line {
+            border-left: 10px dashed skyblue;
+            background-color: #0091ea;
+            cursor:crosshair;
+
+
+        }
+ 
+        .resize-bar::-webkit-scrollbar {
+            width: 200px;
+            height: inherit;
+        }
+ 
+        /* Firefox只有下面一小块区域可以拉伸 */
+        @supports (-moz-user-select: none) {
+ 
+            .resize-bar:hover~.resize-line,
+            .resize-bar:active~.resize-line {
+                border-left: 10px solid red;
+            }
+ 
+            .resize-bar:hover~.resize-line::after,
+            .resize-bar:active~.resize-line::after {
+                content: '';
+                position: absolute;
+                width: 16px;
+                height: 16px;
+                bottom: 0;
+                right: -8px;
+                background: url(./resize.svg);
+                background-size: 100% 100%;
+            }
+        }
+       html, body, #container {
+            height: 100%;
+            width: 100%;
+        }
+
+        .input-card .btn{
+            margin-right: 1.2rem;
+            width: 9rem;
+        }
+
+        .input-card .btn:last-child{
+            margin-right: 0;
+        }
+
+       
+        .input-card2 {
+          z-index: 20;
+          display: flex;
+          flex-direction: column;
+          min-width: 0;
+          word-wrap: break-word;
+          background-color: #fff;
+          background-clip: border-box;
+          border-radius: .25rem;
+          width: 22rem;
+          border-width: 0;
+          border-radius: 0.4rem;
+          box-shadow: 0 2px 6px 0 rgba(114, 124, 245, .5);
+          position: fixed;
+          top: 1rem;
+          right: 1rem;
+          -ms-flex: 1 1 auto;
+          flex: 1 1 auto;
+          padding: 0.75rem 1.25rem;
+       }
+
+
+
+
+    </style>
+</head>
+ 
+<body>
+    <div class="column">
+        <div class="column-left">
+            <div class="resize-bar"></div>
+            <div class="resize-line"></div>
+            <div class="resize-save" id="container" tabindex="0">
+                左侧的内容，左侧的内容，左侧的内容，左侧的内容
+            </div>
+        </div>
+       
+ <div class="column-right">
+
+    <div class="input-card2">
+        <h4>轨迹回放控制</h4>
+        <div class="input-item">
+            <input type="button" class="btn" value="开始动画" id="start" onclick="startAnimation()"/>
+            <input type="button" class="btn" value="暂停动画" id="pause" onclick="pauseAnimation()"/>
+        </div>
+        <div class="input-item">
+            <input type="button" class="btn" value="继续动画" id="resume" onclick="resumeAnimation()"/>
+            <input type="button" class="btn" value="停止动画" id="stop" onclick="stopAnimation()"/>
+        </div>
+    </div>
+    <div style="width: 100%;height:auto;float:left;margin-top: 0px;">
+
+        <blockquote class="layui-elem-quote" style="font-size: 16px">
+          查询数据
+        </blockquote>
+      </div>
+      <div style="width: 100%;height:auto;float:left">
+        <div class="layui-inline" style="margin-right: -10px;margin-left: 20px;float: left;margin-top: 10px;">
+          <label class="layui-form-label" style="width:auto">查看定位时间:</label>
+          <div class="layui-input-inline" style="width:120px">
+            <input type="text" class="layui-input" id="S_Date" placeholder="yyyy-MM-dd">
+          </div>
+        </div>
+      </div>
+      <div style="width: 100%;height: auto;float:left">
+        <label class="layui-form-label" style="width:auto;margin-left: 20px;">过滤人员信息:</label>
+        <div class="layui-input-inline" style="width: 120px;">
+          <input type="text" autocomplete="off" class="layui-input" id="u_name">
+        </div>
+      </div>
+      <div style="width: 100%;height: auto;float:left">
+        <label class="layui-form-label" style="width:auto;margin-left: 20px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 运单号:</label>
+        <div class="layui-input-inline" style="width: 120px;">
+          <input type="text" autocomplete="off" class="layui-input" id="ydh">
+        </div>
+      </div>
+      <div style="width: 100%;height:auto;float:left">
+        <button class="layui-btn layui-btn-blue" style="width: 20%;margin-top:10px;margin-left: 35px;"
+          id="qryShopListBtn">查询</button>
+      </div>
+      <div style="width: 100%;height:auto;float:left;margin-top: 30px;">
+  
+        <blockquote class="layui-elem-quote" style="font-size: 16px">
+          操作数据
+        </blockquote>
+      </div>
+      <div style="width: 80%;height:auto;float:left;margin-left: 10%;">
+        <table id="demo"></table>
+      </div>
+  
+  
+      <div style="width: 100%;height:auto;float:left;margin-top: 5px;">
+  
+        <blockquote class="layui-elem-quote" style="font-size: 16px">
+          详细信息
+        </blockquote>
+      </div>
+      <div style="width: 100%;height:auto;float:left;margin-top: 0px;"  >
+  
+        <div style="width: auto;margin-top:10px;margin-left: 35px;font-size: 15px;color: #ccc">
+          司机姓名: <span id="userName"></span>
+        </div>
+  
+        <div style="width: auto;margin-top:10px;margin-left: 35px;font-size: 15px;color: #ccc">
+          手机号: <span id="userPhone"></span>
+        </div>
+  
+        <div style="width: auto;margin-top:10px;margin-left: 35px;font-size: 15px;color: #ccc">
+          运单号: <span id="userysId"></span>
+        </div>
+  
+        <div style="width: auto;margin-top:10px;margin-left: 35px;font-size: 15px;color: #ccc">
+          车辆信息: <span id="carName"></span>
+        </div>
+  
+        <div style="width: auto;margin-top:10px;margin-left: 35px;font-size: 15px;color: #ccc">
+          车辆类型: <span id="carType"></span>
+        </div>
+         <div style="width: auto;margin-top:10px;margin-left: 35px;font-size: 15px;color: #ccc">
+          运单状态: <span id="orderType" style="color:blue"></span>
+        </div>
+        </div>
+    </div>
+  </div>
+
+
+</body>
+<script language="javascript" src="./kongjianFZ/gaode.js"></script>
+<script src="../../assets/layui.all.js"></script>
+<script src="../yewuguanli/kongjianFZ/djbhOrgwid.js"></script>
+ <script src="../yewuguanli//kongjianFZ/zezhaoceng.js"></script>
+<script language="javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=1a335df4d12b9fe5bbbc44a0e39eccc6&plugin=AMap.GraspRoad"></script>
+<script src="../js/_URL.js"></script>
+<script type="text/javascript">
+  var element = layui.element;
+  var table = layui.table;
+  var $form = layui.form;
+  var isTypebNum = 0;
+  var laydate = layui.laydate;
+  var $ = layui.$;
+  var $layer = layui.layer;
+  var DateListArr = "";
+  var userDate = JSON.parse(window.sessionStorage.getItem("userNameList"));
+  var isshow = true;
+  var url = _url();
+  var url1 = _urlJson();
+  var serverCode = _serverCode();
+  var VisitListWArr = [];
+  var arr = [];
+  var ksarr = [];
+
+
+  $("#qryShopListBtn").click(function () {
+    RoleListWDate();
+  })
+
+  function init() {
+   $(".column-right").height(window.innerHeight - 60);
+    $(".column-left").height(window.innerHeight - 60);
+
+    laydate.render({
+      elem: '#S_Date',
+      value: timeDate1(1),
+      isInitValue: true
+    });
+    setTimeout(function () {
+      RoleListWDate();
+    }, 200);
+  }
+
+  init();
+
+  function RoleListWXR(dataList) {
+    return {
+      elem: '#demo',
+      cols: [
+        [ //标题栏
+          {
+            field: 'ys_id',
+            title: '运单号',
+            width: 120
+          }, {
+            field: 'username',
+            title: '司机名称',
+            width: 120
+          }, {
+            field: 'car_code',
+            title: '车辆信息',
+            width: 120
+          }
+        ]
+      ],
+      data: dataList,
+      skin: 'line' //表格风格
+      ,
+      even: true,
+      page: true //是否显示分页
+      ,
+      limits: [5, 20],
+      limit: 5,
+      done: function (res, page, count) {
+        var that = this.elem.next();
+        //alert(JSON.stringify(res))
+
+        console.log(that);
+        res.data.forEach(function (item, index) {
+          console.log(index);
+          var tr = that.find(".layui-table-box tbody tr[data-index='" + index + "']").attr("onclick",
+            "search2('" + index + "')");
+
+        });
+      }
+    };
+  }
+ function RoleListWXH(dataList) {
+    for (var i = 0; i < dataList.length; i++) {
+      dataList[i].code = (i + 1);
+      dataList[i].BtnStyle = "<div>" +
+        "<div style='float: left;padding: 0px 5px;background: #177ce3;border-radius: 2px;color: #fff;' onclick = 'RoleListWClick(" +
+        i + ")'><i class='layui-icon'>&#xe642;</i></div>" +
+        "<div style='margin-left:10px;float: left;padding: 0px 5px;background: red;border-radius: 2px;color: #fff;' onclick = 'RoleListWDClick(" +
+        i + ")'><i class='layui-icon'>&#xe640;</i></div>" +
+        "</div>"
+    }
+    return RoleListWXR(dataList);
+  }
+
+  function RoleListWDate() {
+    var data = "createtime=" + $("#S_Date").val()
+    +"&username="+$("#u_name").val()
+    +"&ys_id="+$("#ydh").val(); //序列化表单数据 \
+    
+    $.getJSON(url + "getTran?" + data,
+      function (json) {
+        VisitListWArr = json.Response.RDATA;
+        let str = RoleListWXH(VisitListWArr);
+        table.render(str);
+        return;
+      })
+  }
+
+  function search2(index) {
+    $("#userName").html(VisitListWArr[index].username);
+    $("#userPhone").html(VisitListWArr[index].userPhone);
+    $("#userysId").html(VisitListWArr[index].ys_id);
+    $("#carName").html(VisitListWArr[index].car_code);
+    $("#carType").html(VisitListWArr[index].car_type);
+    if (VisitListWArr[index].ys_type == '0') {
+      $("#orderType").html("运输中");
+      $("#orderType").css("color", "#cccccc");
+    } else {
+      $("#orderType").html("运输结束");
+      $("#orderType").css("color", "blue");
+    }
+ 
+    $.getJSON(url + "DingWeiSelect?Userid=" + VisitListWArr[index].userid+"&ys_id="+VisitListWArr[index].ys_id,
+      function (json) {
+        let dingweiArr = json.Response.RDATA;
+
+        dingweiArrPJ(dingweiArr);
+        return;
+      })
+  }
+ function dingweiArrPJ(dingweiArr) {
+  arr.length=0;
+
+    for (let i in dingweiArr) {
+      let arrpg = {};
+      arrpg.x = Number(dingweiArr[i].jingdu);
+      arrpg.y = Number(dingweiArr[i].weidu);
+      arrpg.tm = Number(i);
+      arrpg.sp = Number("10");
+      arrpg.ag = 0;
+      arr.push(arrpg)
+    }
+    dingweiGJ(arr)
+   }
+
+  function dingweiGJ(arr) {
+
+    var graspRoad;
+    var pathParam = arr;
+    var path1 = [];
+    path1.length=0;
+
+     for (var i = 0; i < pathParam.length; i += 1) {
+      path1.push([pathParam[i].x, pathParam[i].y])
+      if( i == 1){
+        ksarr.push(pathParam[i].x, pathParam[i].y);
+
+      }
+    }
+    lineArr = path1;
+  }
+  var marker; 
+ // lineArr = [[116.478935,39.997761],[116.478939,39.997825],[116.478912,39.998549],[116.478912,39.998549],[116.478998,39.998555],[116.478998,39.998555],[116.479282,39.99856],[116.479658,39.998528],[116.480151,39.998453],[116.480784,39.998302],[116.480784,39.998302],[116.481149,39.998184],[116.481573,39.997997],[116.481863,39.997846],[116.482072,39.997718],[116.482362,39.997718],[116.483633,39.998935],[116.48367,39.998968],[116.484648,39.999861]];
+ var lineArr = "";
+
+  // 绘制轨迹
+
+  var map = new AMap.Map("container", {
+        resizeEnable: true,
+        center: [116.346371,35.46295],
+        zoom: 17
+    });
+    // 创建点覆盖物
+    var marker = new AMap.Marker({
+        position: new AMap.LngLat(116.346371, 35.46295),
+        offset: new AMap.Pixel(-13, -30)
+    });
+
+  marker = new AMap.Marker({
+        map: map,
+        position: [116.346371,35.46295],
+        icon: "https://webapi.amap.com/images/car.png",
+        offset: new AMap.Pixel(-26, -13),
+        autoRotation: true,
+        angle:-90,
+    });
+   
+    var polyline = new AMap.Polyline({
+        map: map,
+        path: lineArr,
+        showDir:true,
+        strokeColor: "#28F",  //线颜色
+        // strokeOpacity: 1,     //线透明度
+        strokeWeight: 6,      //线宽
+        // strokeStyle: "solid"  //线样式
+    });
+  var passedPolyline = new AMap.Polyline({
+        map: map,
+        // path: lineArr,
+        strokeColor: "#AF5",  //线颜色
+        // strokeOpacity: 1,     //线透明度
+        strokeWeight: 6,      //线宽
+        // strokeStyle: "solid"  //线样式
+    });
+
+
+
+  marker.on('moving', function (e) {
+        passedPolyline.setPath(e.passedPath);
+    });
+
+    map.setFitView();
+
+    
+  function startAnimation () {
+        marker.moveAlong(lineArr, 200);
+    }
+ function pauseAnimation () {
+        marker.pauseMove();
+    }
+
+    function resumeAnimation () {
+        marker.resumeMove();
+    }
+
+    function stopAnimation () {
+        marker.stopMove();
+    }
+ 
+</script>
+</body>
+
+</html>
+</html>

@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css" />
+  <link rel="stylesheet" href="../../assets/css/layui.css">
+  <link rel="stylesheet" href="../../assets/css/view.css" />
+  <link rel="stylesheet" href="../../assets/css/tankuang.css" />
+
+
+  <link rel="icon" href="/favicon.ico">
+  <title>人员管理</title>
+  <style>
+    html,
+    body,
+    #container {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+
+<body class="layui-view-body">
+  <div class="layui-row">
+    <div>
+      <div class="layui-content">
+        <div class="layui-row">
+          <div class="layui-card">
+            <div class="layui-card-body">
+              <div class="form-box">
+                <div class="layui-form layui-form-item">
+                  <div class="layui-col-xs3">
+                    <div class="layui-form-mid" style="float: left;">过滤条件:</div>
+                    <div class="layui-input-inline" style="width: 160px;">
+                      <input type="text" autocomplete="off" class="layui-input" id="car_name">
+                    </div>
+                  </div>
+
+                  <button class="layui-btn layui-btn-blue" id="qryShopListBtn"><i
+                      class='layui-icon'>&#xe615;</i>查询</button>
+                  <button class="layui-btn layui-btn-blue" style="margin-top: 5px;float:right;" onclick="addbjjwd()"><i
+                      class="layui-icon">&#xe654;</i>获取经纬度</button>
+                  <button class="layui-btn layui-btn-blue" style="margin-top: 5px;float:right;"
+                    onclick="addListDate()"><i class="layui-icon">&#xe654;</i>添加收货人</button>
+
+                </div>
+                <table id="demo"></table>
+                <div class="zezhaoceng4" id="zezhaoceng4">
+                  <div class="beijingCeng4">
+                    <div id="beijingCengBtn4"
+                      style="position: absolute;z-index: 88;right: 13px;top: 10px;color:red;width: 20px;height: 20px;">
+                      <i class="layui-icon" style="font-size: 30px;">&#x1007;</i>
+                    </div>
+                    <div id="container"></div>
+                  </div>
+                </div>
+                <div class="zezhaoceng3" id="zezhaoceng3">
+                  <div class="beijingCeng4">
+                    <div id="beijingCengBtn3"
+                      style="position: absolute;z-index: 88;right: 13px;top: 10px;color:red;width: 20px;height: 20px;">
+                      <i class="layui-icon" style="font-size: 30px;">&#x1007;</i>
+                    </div>
+                    <div class="layui-row">
+                      <div class="layui-card">
+                        <div class="layui-card-body">
+
+                          <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;" id="t_bt">
+                            <legend>修改人员信息</legend>
+                          </fieldset>
+                          <form class="form-horizontal" id="form1">
+                            <div class="inputStyle2" style=" float: center;margin-top:-1.8rem;overflow: hidden;">
+                              <div class="layui-form-mid" style="margin-top:15px;width: 30%;text-align: right">
+                                收货人：
+                              </div>
+                              <div class="layui-form-mid" style=" width: 40%;margin-top:5px;"> <input type="text"
+                                  id="consignee" class="layui-input"><input type="hidden" id="code" class="layui-input">
+                              </div>
+                            </div>
+                            <div class="inputStyle2" style=" float: center;overflow: hidden;">
+                              <div class="layui-form-mid" style="margin-top:15px;width: 30%;text-align: right">
+                                收货人手机：
+                              </div>
+                              <div class="layui-form-mid" style=" width: 40%;margin-top:5px;"> <input type="text"
+                                  id="consignee_phone" class="layui-input"></div>
+                            </div>
+                            <div class="inputStyle2" style=" float: center;overflow: hidden;">
+                              <div class="layui-form-mid" style="margin-top:15px;width: 30%;text-align: right">
+                                收货地址：
+                              </div>
+                              <div class="layui-form-mid" style=" width: 40%;margin-top:5px;"> <input type="text"
+                                  id="consignee_address" class="layui-input"></div>
+                            </div>
+
+                            <div class="inputStyle2" style=" float: center;overflow: hidden;">
+                              <div class="layui-form-mid" style="margin-top:15px;width: 30%;text-align: right">
+                                收货坐标经度：
+                              </div>
+                              <div class="layui-form-mid" style=" width: 40%;margin-top:5px;"> <input type="text"
+                                  id="consignee_jd" class="layui-input"></div>
+                                  
+                                  <a href="http://www.gpsspg.com/maps.htm" style="height: 46px;line-height: 52px;color: blue;" target="_blank">获取坐标</a>
+                            </div>
+
+
+                            <div class="inputStyle2" style=" float: center;overflow: hidden;">
+                              <div class="layui-form-mid" style="margin-top:15px;width: 30%;text-align: right">
+                                收货坐标维度：
+                              </div>
+                              <div class="layui-form-mid" style=" width: 40%;margin-top:5px;"> <input type="text"
+                                  id="consignee_wd" class="layui-input"></div>
+                            </div>
+                          </form>
+                          <div style="width: 100%;float: left;margin-top: 10px;margin-left: 40%">
+
+                            <button class="layui-btn layui-btn-blue" style="margin-left: 0%;" id="RoleListAddBtn"
+                              onclick="f_save();return false;">保存</button>
+
+                             
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+
+  <script src="../../assets/layui.all.js"></script>
+  <script src="../../assets/jquery.js" type="text/javascript"></script>
+
+  <script src="./kongjianFZ/zezhaoceng.js"></script>
+  <script src="./kongjianFZ/djbhOrgwid.js"></script>
+  <script src="./kongjianFZ/jiaoyan.js"></script>
+  <script language="javascript"
+    src="https://webapi.amap.com/maps?v=1.4.15&key=1a335df4d12b9fe5bbbc44a0e39eccc6&plugin=AMap.GraspRoad"></script>
+
+  <script src="../js/_URL.js"></script>
+  <script>
+    var element = layui.element;
+    var table = layui.table;
+    var $form = layui.form;
+    var isTypebNum = 0;
+    var laydate = layui.laydate;
+    var $ = layui.$;
+    var $layer = layui.layer;
+    var DateListArr = "";
+    var userDate = JSON.parse(window.sessionStorage.getItem("userNameList"));
+    var isshow = true;
+    var url = _url();
+    var url1 = _urlJson();
+    var serverCode = _serverCode();
+
+    var BumenListArr = {};
+    // 人员列表数据
+    var RoleListArr = {};
+    // 选中人员数据
+    var RoleArr = {}
+    // 外边选中人员数据
+    var RoleWArr = {}
+    var RoleListWArr = {}
+
+    function addListDate() {
+      var $input = document.getElementById("zezhaoceng3");
+      $input.style.display = "block";
+
+      $("#t_bt").html("<legend>添加车辆信息</legend>");
+      $("#RoleListAddBtn").attr({
+        "onclick": "f_save();"
+      });
+      document.getElementById('consignee').focus();
+      $("#consignee").val("");
+
+      $("#form1")[0].reset();
+    }
+
+    function RoleListWClick(index) {
+
+      RoleWArr = RoleListWArr[index];
+      var $input1 = document.getElementById("zezhaoceng3");
+      $input1.style.display = "block";
+
+      $("#RoleListAddBtn").attr({
+        "onclick": "f_updata();"
+      });
+      $("#t_bt").html("<legend>编辑单位信息</legend>");
+
+      $("#consignee").val(RoleWArr.consignee_GSMC)
+      $("#consignee_phone").val(RoleWArr.consignee_phone)
+      $("#consignee_jd").val(RoleWArr.consignee_jd)
+      $("#consignee_wd").val(RoleWArr.consignee_wd)
+      $("#consignee_address").val(RoleWArr.consignee_address)
+      $("#code").val(RoleWArr.dept_id);
+
+    }
+    function f_save() {
+      if ($("#consignee_address").val() == "") {
+        layer.msg('地址不能为空', function () {
+          return;
+        });
+        return;
+      }
+
+      $layer.load();
+      var data = "consignee=" + $("#consignee").val() +
+        "&consignee_phone=" + $("#consignee_phone").val() +
+        "&consignee_jd=" + $("#consignee_jd").val() +
+        "&consignee_wd=" + $("#consignee_wd").val() +
+        "&consignee_address=" + $("#consignee_address").val();
+
+      $.getJSON(url + "deptAdd?" + data,
+        function (json) {
+          if (json.Response.code > 0) {
+            alert(json.Response.msg)
+            $layer.closeAll('loading');
+            var $input1 = document.getElementById("zezhaoceng3");
+            $input1.style.display = "none";
+
+            RoleListWDate("", "JH", $("#RoleListInput").val(), url, serverCode, "",
+              function (
+                date, RoleListArr1) {
+                table.render(date);
+                RoleListWArr = RoleListArr1;
+
+              });
+
+          } else {
+            $layer.closeAll('loading');
+            $layer.msg("没有数据", {
+              icon: 5
+            });
+            return;
+          }
+        })
+    }
+    function f_updata() {
+
+      $layer.load();
+      var data = "dept_id=" +RoleWArr.deptID +
+        "&consignee=" + $("#consignee").val() +
+        "&consignee_phone=" + $("#consignee_phone").val() +
+        "&consignee_jd=" + $("#consignee_jd").val() +
+        "&consignee_wd=" + $("#consignee_wd").val() +
+        "&consignee_address=" + $("#consignee_address").val();
+
+
+
+      $.getJSON(url + "deptupdate?" + data,
+        function (json) {
+          if (json.Response.code > 0) {
+            alert(json.Response.msg)
+            $layer.closeAll('loading');
+
+            var $input1 = document.getElementById("zezhaoceng3");
+            $input1.style.display = "none";
+
+            RoleListWDate("", "JH", $("#RoleListInput").val(), url, serverCode, "",
+              function (date, RoleListArr1) {
+                table.render(date);
+                RoleListWArr = RoleListArr1;
+
+              });
+
+          } else {
+            $layer.closeAll('loading');
+            $layer.msg("没有数据", {
+              icon: 5
+            });
+            return;
+          }
+        })
+    }
+
+
+
+
+    function RoleListWDClick(index) {
+      RoleWArr = RoleListWArr[index];
+      if (window.confirm("确认删除")) {
+        var data = "dept_id=" + RoleWArr.dept_id;
+        $.getJSON(url + "deptDelete?" + data,
+          function (json) {
+
+            if (json.Response.code > 0) {
+              alert(json.Response.msg)
+              $layer.closeAll('loading');
+
+              window.location.reload();
+            } else {
+              $layer.msg("删除失败", {
+                icon: 5
+              });
+              $layer.closeAll('loading');
+            }
+          })
+      } else {
+        return;
+      }
+    }
+
+
+    layui.use(['form', 'element'], function () {
+      var form = layui.form;
+    });
+
+    function RoleListWXR(dataList) {
+      return {
+        elem: '#demo',
+        cols: [
+          [ //标题栏
+            {
+              field: 'code',
+              title: '编号',
+              width: 90
+            }, {
+              field: 'consignee_GSMC',
+              title: '收货单位',
+              width: 300,
+              //   sort: true
+            }, {
+              field: 'consignee_address',
+              title: '收货人地址',
+              width: 350
+            }, {
+              field: 'consignee_phone',
+              title: '收货人手机',
+              width: 130
+            }, {
+              field: 'consignee_jd',
+              title: '东经',
+              width: 180
+            }, {
+              field: 'consignee_wd',
+              title: '北纬',
+              width: 180
+            }, {
+              field: 'BtnStyle',
+              width: 200,
+              title: '操作',
+              fixed: 'right',
+            }
+          ]
+        ],
+        data: dataList,
+        skin: 'line' //表格风格
+        ,
+        even: true,
+        page: true //是否显示分页
+        ,
+        limits: [10, 20],
+        limit: 10,
+        done: function (res, page, count) {
+          var that = this.elem.next();
+          //alert(JSON.stringify(res))
+
+          console.log(that);
+          res.data.forEach(function (item, index) {
+
+            // var tr = that.find(".layui-table-box tbody tr[data-index='" + index + "']").attr("onclick",
+            //   "search2('" + index + "','" + res.data[index].ID + "')");
+
+          });
+        }
+      };
+    }
+    function RoleListWDClick3(index) {
+
+      let jingduM = Number(RoleListWArr[index].consignee_jd);
+      let weiduM = Number(RoleListWArr[index].consignee_wd);
+      var map = new AMap.Map("container", {
+        resizeEnable: true,
+        center: [jingduM, weiduM],
+        zoom: 16
+      });
+      map.clearMap();
+      var marker = new AMap.Marker({
+        map: map,
+        position: [jingduM, weiduM]
+      });
+
+      var $input1 = document.getElementById("zezhaoceng4");
+      $input1.style.display = "block";
+    }
+    function RoleListWXH(dataList) {
+      for (var i = 0; i < dataList.length; i++) {
+        dataList[i].code = (i + 1);
+        dataList[i].BtnStyle = "<div>" +
+          "<div style='float: left;padding: 0px 5px;background: #177ce3;border-radius: 2px;color: #fff;' onclick='RoleListWClick(" +
+          i + ")'><i class='layui-icon'>&#xe642;</i></div>" +
+
+          "<div style='margin-left:10px;float: left;padding: 0px 5px;background: blue;border-radius: 2px;color: #fff;' onclick='RoleListWDClick3(" +
+          i + ")'><i class='layui-icon'>&#xe715;</i> 查看定位</div>" +
+
+          "<div style='margin-left:10px;float: left;padding: 0px 5px;background: red;border-radius: 2px;color: #fff;' onclick='RoleListWDClick(" +
+          i + ")'><i class='layui-icon'>&#xe640;</i></div>" +
+          "</div>"
+      }
+      return RoleListWXR(dataList);
+    }
+
+    function RoleListWDate(Staff_ID, djlx, Value1, url, serverCode, USERID, callback) {
+      $layer.load();
+      var data = "consignee_gsmc=" + $("#car_name").val(); //序列化表单数据 
+      $.getJSON(url + "deptselect?" + data,
+        function (json) {
+          RoleListWArr = json.Response.RDATA;
+          $layer.closeAll('loading');
+          callback(RoleListWXH(RoleListWArr), RoleListWArr);
+          return;
+        })
+    }
+
+    function addbjjwd() {
+      $layer.load();
+      var data = "consignee="; //序列化表单数据 
+      $.getJSON(url + "deptUpdate?" + data,
+        function (json) {
+          // RoleListWArr = json.Response.RDATA;
+          // $layer.closeAll('loading');
+          // callback(RoleListWXH(RoleListWArr), RoleListWArr);
+          // return;
+        })
+    }
+
+    $("#qryShopListBtn").click(function () {
+
+      RoleListWDate(userDate.USERID, "JH", $("#RoleListInput").val(), url, serverCode, userDate.USERCODE, function (
+        date, RoleListArr1) {
+        table.render(date);
+        RoleListWArr = RoleListArr1;
+      });
+
+    });
+    $(document).ready(function () {
+      RoleListWDate(userDate.USERID, "JH", $("#RoleListInput").val(), url, serverCode, userDate.USERCODE, function (
+        date, RoleListArr1) {
+        table.render(date);
+        RoleListWArr = RoleListArr1;
+      });
+      //常规用法
+      laydate.render({
+        elem: '#G_Date',
+        value: timeDate1(0),
+        isInitValue: true
+      });
+
+    })
+  </script>
+</body>
+
+</html>

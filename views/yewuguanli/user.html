@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" href="../../assets/css/layui.css">
+  <link rel="stylesheet" href="../../assets/css/view.css" />
+  <link rel="stylesheet" href="../../assets/css/tankuang.css" />
+
+  <link rel="icon" href="/favicon.ico">
+  <title>人员管理</title>
+  <style>
+  </style>
+</head>
+
+<body class="layui-view-body">
+  <div class="layui-row">
+    <div  >
+      <div class="layui-content">
+        <div class="layui-row">
+          <div class="layui-card">
+            <div class="layui-card-body">
+              <div class="form-box">
+                <div class="layui-form layui-form-item">
+                  <div class="layui-col-xs3">
+                    <div class="layui-form-mid" style="float: left;">过滤条件:</div>
+                     <div class="layui-input-inline" style="width: 160px;">
+                       <input type="text" autocomplete="off" class="layui-input" id="user_name">
+                     </div>
+                     </div>
+                 
+                  <button class="layui-btn layui-btn-blue" id="qryShopListBtn"><i class='layui-icon'>&#xe615;</i>查询</button>
+                  <button class="layui-btn layui-btn-blue" style="margin-top: 5px;float:right;" onclick="addListDate()"><i
+                    class="layui-icon">&#xe654;</i>添加人员</button>
+                </div>
+                 
+                  <table id="demo"></table>
+                  <div class="zezhaoceng3" id="zezhaoceng3">
+                    <div class="beijingCeng4">
+                      <div id="beijingCengBtn3"
+                        style="position: absolute;z-index: 88;right: 13px;top: 10px;color:red;width: 20px;height: 20px;">
+                        <i class="layui-icon" style="font-size: 30px;">&#x1007;</i>
+                      </div>
+                      <div class="layui-row">
+                        <div class="layui-card">
+                          <div class="layui-card-body">
+                            
+                                <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;"
+                                  id="t_bt">
+                                  <legend>修改人员信息</legend>
+                                </fieldset>
+                               
+
+                                <table class="layui-table" lay-size="sm">
+                                 <tr>
+                                  <td> 姓名：</td>  
+                                  <td> <input type="text" id="name" class="layui-input"><input type="hidden" id="code"  class="layui-input"></td>  
+                                  <td> 账号：</td>  
+                                  <td>  <input type="text" id="userCode"  class="layui-input"></td>  
+                                </tr>
+                                 
+                                   <tr>
+                                      <td> 密码：</td>  
+                                      <td>  <input type="text" id="userPSW"  class="layui-input"></td>  
+                                      <td> 手机号：</td>  
+                                      <td>  <input type="text" id="userPhone"  class="layui-input"></td>  
+                                    </tr>
+                                      
+                                       <tr>
+                                          <td> 家庭地址：</td>  
+                                          <td>  <input type="text" id="address"  class="layui-input"></td>  
+                                          <td> 状态：</td>  
+                                          <td>  
+                                          <select  id="state">
+                                            <option value="1">是</option>
+                                            <option value="0">否</option>
+                                          </select>
+                                          </td>  
+                                        </tr>
+                                       
+
+                                </table>
+                              
+                                
+                                 
+                                    <div class="inputStyle"
+                                    style="margin-top:8px; float: right;visibility:hidden;display: none;" id="code2">
+                                    <div class="layui-form-mid" style="margin-top:8px;width: 80px;text-align: right">编码：
+                                    </div>
+                                    <div class="layui-form-mid" id="RolecdW" style="color:forestgreen"> <input
+                                        type="text" id="code" class="layui-input"></div>
+                                  </div>
+                                
+                                <div style="width: 100%;float: left;margin-top: 10px;margin-left: 40%">
+
+                                  <button class="layui-btn layui-btn-blue" style="margin-left: 0%;" id="RoleListAddBtn"
+                                    onclick="f_save();return false;">保存</button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+ 
+
+  <script src="../../assets/layui.all.js"></script>
+  <script src="../../assets/jquery.js" type="text/javascript"></script>
+  
+  <script src="./kongjianFZ/zezhaoceng.js"></script>
+  <script src="./kongjianFZ/djbhOrgwid.js"></script>
+  <script src="./kongjianFZ/jiaoyan.js"></script>
+
+  <script src="../js/_URL.js"></script>
+  <script>
+    var element = layui.element;
+    var table = layui.table;
+    var $form = layui.form;
+    var isTypebNum = 0;
+    var laydate = layui.laydate;
+    var $ = layui.$;
+    var $layer = layui.layer;
+    var DateListArr = "";
+    var userDate = JSON.parse(window.sessionStorage.getItem("userNameList"));
+    var isshow = true;
+    var url = _url();
+    var url1 = _urlJson();
+    var serverCode = _serverCode();
+
+    var BumenListArr = {};
+    // 人员列表数据
+    var RoleListArr = {};
+    // 选中人员数据
+    var RoleArr = {}
+    // 外边选中人员数据
+    var RoleWArr = {}
+    var RoleListWArr = {}
+
+    function addListDate() {
+      var $input = document.getElementById("zezhaoceng3");
+      $input.style.display = "block";
+      $("#code2").css('visibility', 'visible');
+      $("#t_bt").html("<legend>添加人员信息</legend>");
+      $("#RoleListAddBtn").attr({
+        "onclick": "f_save();"
+      });
+      document.getElementById('name').focus();
+      $("#name").val("");
+      $("#userCode").val("");
+      $("#userPhone").val("");
+      $("#userPSW").val("");
+      $("#address").val("");
+    }
+
+    function RoleListWClick(index) {
+
+      RoleWArr = RoleListWArr[index];
+      var $input1 = document.getElementById("zezhaoceng3");
+      $input1.style.display = "block";
+      $("#code2").css('visibility', 'hidden');
+      $("#RoleListAddBtn").attr({
+        "onclick": "f_updata();"
+      });
+      $("#t_bt").html("<legend>修改人员信息</legend>");
+      $("#name").val(RoleWArr.userName);
+      $("#userCode").val(RoleWArr.userCode);
+      $("#userPhone").val(RoleWArr.userPhone);
+      $("#userPSW").val(RoleWArr.userPSW);
+      $("#address").val(RoleWArr.address);
+      $("#code").val(RoleWArr.userid);
+      $("#state").val(RoleWArr.value1);
+      
+    }
+    function f_save() {
+      if ($("#name").val() == "") {
+        layer.msg('名称不能为空', function () {
+          return;
+        });
+        return;
+      }
+    
+      $layer.load();
+      var data ="userName="+ $("#name").val()+
+                "&userPSW="+ $("#userPSW").val()+
+               "&userCode="+ $("#userCode").val()+
+               "&userPhone="+ $("#userPhone").val()+
+               "&value1="+ $("#state").val()+
+              "&address="+ $("#address").val();
+            
+
+ 
+      $.getJSON(url +  "UserAdd?" +data,
+        function (json) {
+          if (json.Response.code > 0) {
+            alert(json.Response.msg)
+            $layer.closeAll('loading');
+            var $input1 = document.getElementById("zezhaoceng3");
+            $input1.style.display = "none";
+
+            RoleListWDate("", "JH", $("#RoleListInput").val(), url, serverCode, "",
+              function (
+                date, RoleListArr1) {
+                table.render(date);
+                RoleListWArr = RoleListArr1;
+
+              });
+
+          } else {
+            $layer.closeAll('loading');
+            $layer.msg("没有数据", {
+              icon: 5
+            });
+            return;
+          }
+        })
+    }
+    function f_updata() {
+      ;
+      $layer.load();
+      var data ="userName="+ $("#name").val()+
+                "&userPSW="+ $("#userPSW").val()+
+               "&userCode="+ $("#userCode").val()+
+               "&userPhone="+ $("#userPhone").val()+
+              "&address="+ $("#address").val()+
+              "&value1="+ $("#state").val()+
+              "&userid="+ $("#code").val();
+   $.getJSON(url +  "userupdate?" +data,
+        function (json) {
+         if (json.Response.code > 0) {
+          alert(json.Response.msg)
+            $layer.closeAll('loading');
+
+            var $input1 = document.getElementById("zezhaoceng3");
+            $input1.style.display = "none";
+
+            RoleListWDate("", "JH", $("#RoleListInput").val(), url, serverCode, "",
+              function (  date, RoleListArr1) {
+                table.render(date);
+                RoleListWArr = RoleListArr1;
+
+              });
+
+          } else {
+            $layer.closeAll('loading');
+            $layer.msg("没有数据", {
+              icon: 5
+            });
+            return;
+          }
+        })
+    }
+
+ 
+
+
+    function RoleListWDClick(index) {
+      RoleWArr = RoleListWArr[index];
+      if (window.confirm("确认删除")) {
+        var data ="userid="+RoleWArr.userid;
+        //alert(JSON.stringify(data))
+        $.getJSON(url+ "userdelete?" +data,
+          function (json) {
+         
+            if (json.Response.code > 0) {
+          alert(json.Response.msg)
+            $layer.closeAll('loading');
+
+              window.location.reload();
+            } else {
+              $layer.msg("删除失败", {
+                icon: 5
+              });
+              $layer.closeAll('loading');
+            }
+          })
+      } else {
+        return;
+      }
+    }
+ 
+
+    layui.use(['form', 'element'], function () {
+      var form = layui.form;
+    });
+
+    function RoleListWXR(dataList) {
+      return {
+        elem: '#demo',
+        cols: [
+          [ //标题栏
+          {
+                field: 'code',
+                title: '编号',
+                width: 90
+              },{
+                field: 'userCode',
+                title: '登录名称',
+                width: 150,
+                //   sort: true
+              },  {
+                field: 'userName',
+                title: '姓名',
+                width: 120
+              }, {
+                field: 'userPhone',
+                title: '手机号码',
+                width: 180
+              }, {
+                field: 'address',
+                title: '地址',
+                width: 180,
+                //   sort: true
+              },  {
+                field: 'createtime',
+                title: '创建时间',
+                width: 200,
+                //   sort: true
+              },
+              {
+                field: 'value',
+                title: '是否司机',
+                width: 200,
+                //   sort: true
+              },{
+              field: 'BtnStyle',
+              width: 100,
+              title: '操作',
+              fixed: 'right',
+            }
+          ]
+        ],
+        data: dataList,
+        skin: 'line' //表格风格
+          ,
+        even: true,
+        page: true //是否显示分页
+          ,
+        limits: [10, 20],
+        limit: 10,
+        done: function (res, page, count) {
+          var that = this.elem.next();
+          //alert(JSON.stringify(res))
+
+          console.log(that);
+          res.data.forEach(function (item, index) {
+
+            // var tr = that.find(".layui-table-box tbody tr[data-index='" + index + "']").attr("onclick",
+            //   "search2('" + index + "','" + res.data[index].ID + "')");
+
+          });
+        }
+      };
+    }
+    function RoleListWXH(dataList) {
+      for (var i = 0; i < dataList.length; i++) {
+        if( dataList[i].value1==1){
+          dataList[i].value="是";
+        }else if( dataList[i].value1==0){
+          dataList[i].value="否";
+        }
+        dataList[i].code=(i+1);
+        dataList[i].BtnStyle = "<div>" +
+          "<div style='float: left;padding: 0px 5px;background: #177ce3;border-radius: 2px;color: #fff;' onclick='RoleListWClick(" +
+          i + ")'><i class='layui-icon'>&#xe642;</i></div>" +
+          "<div style='margin-left:10px;float: left;padding: 0px 5px;background: red;border-radius: 2px;color: #fff;' onclick='RoleListWDClick(" +
+          i + ")'><i class='layui-icon'>&#xe640;</i></div>" +
+          "</div>"
+      }
+      return RoleListWXR(dataList);
+    }
+
+    function RoleListWDate(Staff_ID, djlx, Value1, url, serverCode, USERID, callback) {
+      $layer.load();
+      var data = "username="+$("#user_name").val(); //序列化表单数据 
+        $.getJSON(url + "getAll?" + data,
+          function (json) {
+              VisitListWArr = json.Response.RDATA;
+            $layer.closeAll('loading');
+            callback(RoleListWXH(VisitListWArr), VisitListWArr);
+            return;
+          })
+    }
+
+    $("#qryShopListBtn").click(function(){
+
+      RoleListWDate(userDate.USERID, "JH", $("#RoleListInput").val(), url, serverCode, userDate.USERCODE, function (
+        date, RoleListArr1) {
+        table.render(date);
+        RoleListWArr = RoleListArr1;
+      });
+
+    });
+    $(document).ready(function () {
+      RoleListWDate(userDate.USERID, "JH", $("#RoleListInput").val(), url, serverCode, userDate.USERCODE, function (
+        date, RoleListArr1) {
+        table.render(date);
+        RoleListWArr = RoleListArr1;
+      });
+      //常规用法
+      laydate.render({
+        elem: '#G_Date',
+        value: timeDate1(0),
+        isInitValue: true
+      });
+ 
+      
+       
+    
+    })
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="assets/css/layui.css">
+    <link rel="stylesheet" href="assets/css/admin.css">
+    <link rel="icon" href="./favicon.ico">
+    <title>管理后台</title>
+    <style>
+        body .layui-tree-skin-shihuang .layui-tree-branch {
+            color: #EDCA50;
+        }
+    </style>
+</head>
+
+<body class="layui-layout-body">
+    <div class="layui-layout layui-layout-admin">
+        <div class="layui-header custom-header">
+
+            <ul class="layui-nav layui-layout-left">
+                <li class="layui-nav-item slide-sidebar" lay-unselect>
+                    <a href="javascript:;" class="icon-font"><i class="ai ai-menufold"></i></a>
+
+                </li>
+
+            </ul>
+            <ul class="layui-nav layui-layout-left" style="left:300px;">
+                <li class="layui-nav-item slide-sidebar">
+                    TMS管理后台
+                </li>
+            </ul>
+            <ul class="layui-nav layui-layout-left" style="left:450px;">
+                <li class="layui-nav-item slide-sidebar" id="tianqiDF">
+                    <div class="weather" pc>
+                        <div id="tp-weather-widget">
+
+                        </div>
+                    </div>
+                </li>
+            </ul>
+             <ul class="layui-nav layui-layout-right">
+                <li class="layui-nav-item showNotice" id="showNotice" pc>
+                    <i class="iconfont icon-gonggao"></i><cite>系统公告</cite>
+                </li>
+                <li class="layui-nav-item showNotice" id="shuaxin" style="margin: 0 15px;" pc>
+                    <i class="iconfont icon-gonggao"></i><cite>刷新页面</cite>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;" id="userNameDF">admin</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="">帮助中心</a></dd>
+                        <dd id="goLogin"><a href="#">退出</a></dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+
+        <div class="layui-side custom-admin">
+            <div class="layui-side-scroll">
+
+                <div class="custom-logo">
+                    <img style='width:25px;height:25px;margin-left:20px;' src="assets/images/gongneng.png" alt=""
+                        width:100%;height:100%; />
+                    <h1>功能列表</h1>
+                </div>
+                <ul id="Nav" class="layui-nav layui-nav-tree">
+                    <!-- <li class="layui-nav-item">
+                        <a href="javascript:;">
+                            <i class="layui-icon">&#xe857;</i>
+                            <em>首页</em>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="views/main.html">首页展示</a></dd>
+                        </dl>
+                    </li> -->
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">
+                            <i class="layui-icon">&#xe609;</i>
+                            <em>系统管理</em>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="views/yewuguanli/user.html">用户管理</a></dd>
+                            <dd><a href="views/yewuguanli/ZFGL.html">支付管理</a></dd>
+                            <!-- <dd><a href="views/yewuguanli/dept.html">收货维护</a></dd> -->
+                        </dl>
+
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">
+                            <i class="layui-icon">&#xe857;</i>
+                            <em>收款</em>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="views/yewuguanli/zhifuJL.html">支付记录</a></dd>
+                        </dl>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">
+                            <i class="layui-icon">&#xe857;</i>
+                            <em>送货人</em>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="views/yewuguanli/user.html">送货人管理</a></dd>
+                            <dd><a href="views/yewuguanli/userDW.html">送货人当前位置</a></dd>
+                            <dd><a href="views/yewuguanli/luxianguiji.html">送货人历史轨迹</a></dd>
+                        </dl>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">
+                            <i class="layui-icon">&#xe857;</i>
+                            <em>客户</em>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="views/yewuguanli/dept.html">客户位置管理</a></dd>
+                            <dd><a href="views/yewuguanli/wzsbsh.html">客户坐标纠正审核</a></dd>
+                            <dd><a href="views/yewuguanli/wzsbsh1.html">客户坐标纠正审核历史</a></dd>
+                        </dl>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">
+                            <i class="layui-icon">&#xe857;</i>
+                            <em>订单管理</em>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="views/cargl/order.html">订单管理</a></dd>
+                            <dd><a href="views/yewuguanli/addyd.html">添加运单</a></dd>
+                            <dd><a href="views/yewuguanli/zhuijiadingdan.html">运单追加</a></dd>
+
+                        </dl>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">
+                            <i class="layui-icon">&#xe857;</i>
+                            <em>仓库</em>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="views/yewuguanli/cangku.html">仓库管理</a></dd>
+
+                        </dl>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">
+                            <i class="layui-icon">&#xe857;</i>
+                            <em>车辆</em>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="views/yewuguanli/cargl.html">车辆管理</a></dd>
+
+                        </dl>
+                    </li>
+                    <!-- <li class="layui-nav-item">
+                        <a href="javascript:;">
+                            <i class="layui-icon">&#xe857;</i>
+                            <em>退货</em>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="views/cargl/order.html">退货详情</a></dd>
+
+                        </dl>
+                    </li> -->
+                    <!-- <li class="layui-nav-item">
+                        <a href="javascript:;">
+                            <i class="layui-icon">&#xe857;</i>
+                            <em>通讯录</em>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="views/yewuguanli/addressBook.html">职员角色管理</a></dd>
+                            <dd><a href="views/cargl/order.html">手机在线情况</a></dd>
+
+                        </dl>
+                    </li> -->
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">
+                            <i class="layui-icon">&#xe857;</i>
+                            <em>运单管理</em>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="views/yewuguanli/ydgl.html">运单查询</a></dd>
+                            <dd><a href="views/yewuguanli/luxianguiji.html">轨迹纠偏图</a></dd>
+                            <dd><a href="views/yewuguanli/luxianguiji2.html">车辆轨迹图</a></dd>
+
+
+
+                        </dl>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">
+                            <i class="layui-icon">&#xe857;</i>
+                            <em>上报事件</em>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="views/yewuguanli/jszcgl.html">拒收装车管理</a></dd>
+                            <dd><a href="views/yewuguanli/shijianSP.html">事件审批</a></dd>
+                            <dd><a href="views/yewuguanli/shijianCX.html">事件查询</a></dd>
+
+                        </dl>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">
+                            <i class="layui-icon">&#xe857;</i>
+                            <em>打印管理</em>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="views/yewuguanli/ydGLDY.html">打印装车单</a></dd>
+
+                        </dl>
+                    </li>
+
+
+                </ul>
+
+            </div>
+        </div>
+
+        <div class="layui-body">
+            <div class="layui-tab app-container" lay-allowClose="true" lay-filter="tabs">
+                <ul id="appTabs" class="layui-tab-title custom-tab"></ul>
+                <div id="appTabPage" class="layui-tab-content"></div>
+            </div>
+        </div>
+        
+
+        <div class="layui-footer" style="height:30px;line-height: 30px;">
+            <p><a href="http://www.tlog.com.cn" target="_blank">@上海通量信息科技有限公司</a></p>
+        </div>
+
+        <div class="mobile-mask"></div>
+    </div>
+    <script src="assets/layui.js"></script>
+    <script src="index.js" data-main="home"></script>
+    <script src="./views/js/_URL.js" data-main="home"></script>
+
+    <script language="javascript"
+        src="https://webapi.amap.com/maps?v=1.4.15&key=1a335df4d12b9fe5bbbc44a0e39eccc6&plugin=AMap.GraspRoad"></script>
+
+    <script>
+
+  
+        layui.define(['layer'], function (exports) {
+            var $ = layui.$;
+            var $layer = layui.layer;
+            var DateListArr = [];
+            var fuCDArr = [];
+            var zhiCDArr = [];
+            var url = _url();
+            var serverCode = _serverCode();
+            var userDate = "";
+            var gonggao = "";
+            var  href="";
+            var createDate_GG = "";
+
+            $("dd>a").click(function (e) {
+            e.preventDefault();
+             href= $(this).attr("href");
+             /// alert($("iframeMain").attr("href"))
+          });
+         $("#shuaxin").click(function (e) {
+          
+           window.frames[window.frames.length-1].location=href;
+           window.frames[window.frames.length-1].location.reload(true);
+         });
+
+
+
+ 
+            function goLogin1() {
+                $layer.msg("退出登录成功", {
+                    icon: 6
+                });
+                setTimeout(function () {
+                    window.location.href = "login/login.html";
+                }, 2000);
+            }
+            $("#goLogin").click(function () {
+                window.sessionStorage.setItem('userNameList', "");
+                goLogin1();
+            })
+            //公告层
+            $("#showNotice").click(function () {
+
+                layer.open({
+                    type: 1,
+                    title: "系统公告" + " " + createDate_GG,
+                    closeBtn: false,
+                    area: '310px',
+                    shade: 0.8,
+                    id: 'LAY_layuipro',
+                    btn: ['关闭'],
+                    moveType: 1,
+                    content: '<div style="padding:15px 20px; text-align:justify; line-height: 22px; text-indent:2em;border-bottom:1px solid #e2e2e2;"><p>' +
+                        gonggao + '</p></div>',
+
+                });
+            });
+            //公告层
+            $("#showxiaoxi").click(function () {
+
+                layer.open({
+                    type: 1,
+                    title: "消息通知",
+                    closeBtn: false,
+                    area: '310px',
+                    shade: 0.8,
+                    id: 'LAY_layuipro',
+                    btn: ['朕已知晓'],
+                    moveType: 1,
+                    content: '<div style="padding:15px 20px; text-align:justify; line-height: 22px; text-indent:2em;border-bottom:1px solid #e2e2e2;"><p>最近偶然发现贤心大神的layui框架，瞬间被他的完美样式所吸引，虽然功能不算强大，但毕竟是一个刚刚出现的框架，后面会慢慢完善的。很早之前就想做一套后台模版，但是感觉bootstrop代码的冗余太大，不是非常喜欢，自己写又太累，所以一直闲置了下来。直到遇到了layui我才又燃起了制作一套后台模版的斗志。由于本人只是纯前端，所以页面只是单纯的实现了效果，没有做服务器端的一些处理，可能后期技术跟上了会更新的，如果有什么问题欢迎大家指导。谢谢大家。</p><p>在此特别感谢Beginner和Paco，他们写的框架给了我很好的启发和借鉴。希望有时间可以多多请教。</p></div>',
+
+                });
+            });
+
+
+            function tianqi() {
+
+                $.ajax({
+                    type: 'GET',
+                    url: 'https://www.tianqiapi.com/api/',
+                    data: 'version=v1&style=1001&city=',
+                    dataType: 'JSON',
+                    error: function () {
+                        alert('网络错误');
+                    },
+                    success: function (res) {
+                        uptime = res.update_time.substring(11);
+                        uptime = uptime.substring(0, uptime.length - 3);
+                        console.log('【' + res.city + '】' + res.data[0].wea + ' ' + res.data[0]
+                            .tem1 +
+                            '/' + res.data[0].tem2 + ',' + uptime + '更新~');
+                        $('#tianqiDF').append('【' + res.city + '】' + res.data[0].wea + ' ' + res
+                            .data[0].tem1 + '/' + res.data[0].tem2);
+                    }
+                });
+            }
+
+            function goLogin() {
+                $layer.msg("检查为登录,请先登录！！！", {
+                    icon: 5
+                });
+                setTimeout(function () {
+                    window.location.href = "login/login.html";
+                }, 2000);
+            }
+
+            function qrygonggao() {
+                $("#renwuRongQi").empty();
+                var data = JSON.stringify({
+                    ServiceCode: "DFOMS",
+                    CUSCODE: serverCode,
+                    InterfaceCode: "get_Notice",
+                }); //序列化表单数据 
+                $.getJSON(url + data,
+                    function (json) {
+                        gonggao = json.result[0].RDATA[0].content;
+                        createDate_GG = json.result[0].RDATA[0].createdate;
+                        return;
+                    })
+            }
+
+            function init() {
+                if (window.sessionStorage.getItem("userNameList") == "" || window.sessionStorage.getItem(
+                        "userNameList") == null) {
+                    goLogin();
+                    return;
+                }
+                userDate = JSON.parse(window.sessionStorage.getItem("userNameList"));
+       
+                $("#userNameDF").html(userDate.userName);
+
+            }
+            init();
+        });
+    </script>
+</body>
+
+</html>

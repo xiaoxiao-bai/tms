@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" href="../../assets/css/layui.css">
+  <link rel="stylesheet" href="../../assets/css/view.css" />
+  <link rel="stylesheet" href="../../assets/css/tankuang.css" />
+  <link rel="icon" href="/favicon.ico">
+  <title>支付管理</title>
+  <style>
+    .beijingCeng_t {
+      word-wrap: break-word;
+      word-break: break-all;
+      overflow: hidden;
+      width: 70%;
+      margin-left: 15%;
+      height: 450px;
+      position: fixed;
+      top: 45%;
+      margin-top: -200px;
+      background: #fff;
+      border-radius: 10px;
+      overflow: scroll;
+    }
+    .el-textarea__inner2 {
+    display: block;
+    resize: vertical;
+    padding: 5px 15px;
+    line-height: 1.5;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 100%;
+    font-size: inherit;
+    color: #606266;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #dcdfe6;
+    border-radius: 4px;
+    -webkit-transition: border-color .2s cubic-bezier(.645, .045, .355, 1);
+    transition: border-color .2s cubic-bezier(.645, .045, .355, 1);
+  }
+  .el-textarea__inner {
+    display: block;
+    resize: vertical;
+    padding: 5px 15px;
+    line-height: 1.5;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 50%;
+    font-size: inherit;
+    color: #606266;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #dcdfe6;
+    border-radius: 4px;
+    -webkit-transition: border-color .2s cubic-bezier(.645, .045, .355, 1);
+    transition: border-color .2s cubic-bezier(.645, .045, .355, 1);
+  }
+
+   
+  </style>
+</head>
+
+<body class="layui-view-body">
+  <div class="layui-row">
+    <div class="layui-content">
+      <div class="layui-row">
+        <div class="layui-card">
+          <div class="layui-card-body">
+            <div class="form-box">
+              <div class="layui-form layui-form-item" id="kanjianBox"></div>
+              <table id="demo"></table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="zezhaoceng3" id="zezhaoceng3">
+        <div class="beijingCeng_t" style=" word-wrap: break-word;  word-break: break-all;  overflow: hidden;">
+          <div id="beijingCengBtn3"
+            style="position: absolute;z-index: 88;right: 13px;top: 10px;color:red;width: 20px;height: 20px;">
+            <i class="layui-icon" style="font-size: 30px;">&#x1007;</i>
+          </div>
+          <div class="layui-row">
+            <div class="layui-card">
+              <div class="layui-card-body">
+
+                <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;" id="t_bt">
+                  <legend><i class='layui-icon'>&#xe6b2;</i>审核意见</legend>
+                </fieldset>
+                <div id="img" class="layui-col-xs5"
+                  style="margin-right: 20px;  background-color: #ffffff;text-align: left;vertical-align: middle;overflow: auto;"><div style="height: 30px;line-height: 30px;margin-top: 20px;">
+                  <div style="width: 25%;text-align: right;float: left; display: none;">申请人：</div>
+                    <div style="float: left;" id="shrLsld"></div>
+                  </div>
+                  <div style="height: 30px;line-height: 30px;margin-top: 20px;">
+                    <div style="width: 25%;text-align: right;float: left;">申请人：</div>
+                    <div style="float: left;" id="shrName"></div>
+                  </div>
+                  <div style="height: 30px;line-height: 30px;">
+                    <div style="width: 25%;text-align: right;float: left;">申请时间：</div>
+                    <div style="float: left;" id="shTime"></div>
+                  </div>
+                  <div style="height: 30px;line-height: 30px;">
+                    <div style="width: 25%;text-align: right;float: left;">目标公司：</div>
+                    <div style="float: left;" id="shAddRess"></div>
+                  </div>
+                  <div style="height: 30px;line-height: 30px;">
+                    <div style="width: 25%;text-align: right;float: left;">历史经纬度：</div>
+                    <div style="float: left;" id="shJWD"></div>
+                  </div>
+                  <div style="height: 30px;line-height: 30px;">
+                    <div style="width: 25%;text-align: right;float: left;">更正经纬度：</div>
+                    <div style="float: left;" id="GZJWD"></div>
+                  </div>
+                  <div style="height: 30px;line-height: 30px;">
+                    <div style="width: 25%;text-align: right;float: left;">备注：</div>
+                    <div style="float: left;" id=shBeiZhu></div>
+                  </div>
+
+                </div>
+                <div>
+                  <textarea rows="12" placeholder="审核意见" cols="65" id="memo" class="el-textarea__inner"
+                    name="memo"></textarea>
+                </div>
+
+              </div>
+
+
+              <div style="width: 100%;float: left;margin-top: 10px;margin-left: 30%;">
+
+                <button class="layui-btn layui-btn-danger" style="margin-left: 0%;margin-right: 10%;"
+                  id="RoleListAddBtn2" onclick="ceshiBtn2(2);return false;"><i
+                    class='layui-icon'>&#x1006;</i>审批不通过</button>
+                <button class="layui-btn" style="margin-left: 0%;" id="RoleListAddBtn"
+                  onclick="ceshiBtn2(1);return false;"><i class='layui-icon'>&#xe605;</i>审批通过</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> -->
+
+      <div class="zezhaoceng4" id="zezhaoceng4">
+        <div class="beijingCeng_t" style=" word-wrap: break-word;  word-break: break-all;  overflow: hidden;">
+          <div id="beijingCengBtn4"
+            style="position: absolute;z-index: 88;right: 13px;top: 10px;color:red;width: 20px;height: 20px;">
+            <i class="layui-icon" style="font-size: 30px;">&#x1007;</i>
+          </div>
+          <div class="layui-row">
+            <div class="layui-card">
+              <div class="layui-card-body">
+                <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+                  <legend><i class='layui-icon'>&#xe705;</i>审核意见</legend>
+                </fieldset>
+                <div class="layui-col-xs6" style="background-color: blueviolet">
+                  <textarea rows="12" placeholder="审核意见" cols="65" id="memo2" class="el-textarea__inner2"
+                    style="border:none;" name="memo"></textarea>
+                </div>
+                <div id="img2" class="layui-col-xs6 ;modal-body"
+                  style="text-align: center;vertical-align: middle;overflow: auto;">
+                  <div style="height: 30px;line-height: 30px;margin-top: 20px;">
+                    <div style="width: 25%;text-align: right;float: left;">申请人：</div>
+                    <div style="float: left;" id="shrName"></div>
+                  </div>
+                  <div style="height: 30px;line-height: 30px;">
+                    <div style="width: 25%;text-align: right;float: left;">申请时间：</div>
+                    <div style="float: left;" id="shTime"></div>
+                  </div>
+                  <div style="height: 30px;line-height: 30px;">
+                    <div style="width: 25%;text-align: right;float: left;">目标公司：</div>
+                    <div style="float: left;" id="shAddRess"></div>
+                  </div>
+                  <div style="height: 30px;line-height: 30px;">
+                    <div style="width: 25%;text-align: right;float: left;">历史经纬度：</div>
+                    <div style="float: left;" id="shJWD"></div>
+                  </div>
+                  <div style="height: 30px;line-height: 30px;">
+                    <div style="width: 25%;text-align: right;float: left;">更正经纬度：</div>
+                    <div style="float: left;" id="GZJWD"></div>
+                  </div>
+                  <div style="height: 30px;line-height: 30px;">
+                    <div style="width: 25%;text-align: right;float: left;">备注：</div>
+                    <div style="float: left;" id=shBeiZhu></div>
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+            <div style="width: 100%;float: left;margin-top: 10px;margin-left: 0%;">
+              
+              <div class="inputStyle" style="width: 40%;float: left;">
+                <div class="layui-form-mid" style="width: 80px;text-align: right">审批结果:</div>
+                <div class="layui-form-mid" id="username_ckJG" style="color:blue"></div>
+              </div>
+              <div class="inputStyle" style="width: 40%;float: left;">
+                <div class="layui-form-mid" style="width: 80px;text-align: right">审批人:</div>
+                <div class="layui-form-mid" id="username_ck" style="color:blue"></div>
+              </div>
+              <div class="inputStyle" style="width: 55%;float: left;">
+                <div class="layui-form-mid" style="width: 80px;text-align: right">审批日期:</div>
+                <div class="layui-form-mid" id="sprq" style="color:blue"></div>
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  </div>
+  </div>
+  <script src="../../assets/layui.all.js"></script>
+  <script src="../../assets/jquery.js" type="text/javascript"></script>
+
+  <script src="./kongjianFZ/zezhaoceng.js"></script>
+  <script src="./kongjianFZ/djbhOrgwid.js"></script>
+  <script src="./kongjianFZ/jiaoyan.js"></script>
+  <script src="./kongjianFZ/tableZDY1.js"></script>
+  <script src="./kongjianFZ/ziJianFZ.js"></script>
+
+  <script src="../js/_URL.js"></script>
+  <script>
+    var table = layui.table;
+    var $ = layui.$;
+    var url = _url();
+    var isshow = true;
+    var url1 = _urlJson();
+    var serverCode = _serverCode();
+    var userDate = JSON.parse(window.sessionStorage.getItem("userNameList"));
+    let listDate = "";
+
+    let dataListTC = {
+      dwid: { "title": "定位ID", "disable": true, "width": 180, "sort": true, "background": "#009688", "color": "#fff" },
+      jingdu: { "title": "经度", "disable": true, "width": 100, "sort": true, "background": "#000", "color": "#fff" },
+      shjy: { "title": "审核建议", "disable": true, "width": 100, "sort": true, "background": "", "color": "" },
+      shtime: { "title": "审核时间", "disable": true, "width": 180, "sort": true, "background": "", "color": "" },
+      shtype: { "title": "审核状态", "disable": true, "width": 100, "sort": true, "background": "", "color": "" },
+      shyy: { "title": "审核人员", "disable": true, "width": 100, "sort": true, "background": "", "color": "" },
+      tjtime: { "title": "提交时间", "disable": true, "width": 180, "sort": true, "background": "", "color": "" },
+      tjyy: { "title": "提交人员", "disable": true, "width": 100, "sort": true, "background": "", "color": "" },
+      weidu: { "title": "维度", "disable": true, "width": 100, "sort": true, "background": "", "color": "" },
+    }
+
+    function shopListCKClick1(index) {
+      $("#shrLsld").html(listDate[index].lsid);
+      $("#shrName").html(listDate[index].tjyy);
+      $("#shTime").html(listDate[index].tjtime);
+      $("#shAddRess").html(listDate[index].consignee_address);
+      $("#shJWD").html(listDate[index].consignee_jd+"/"+listDate[index].consignee_wd);
+      $("#GZJWD").html(listDate[index].jingdu+"/"+listDate[index].weidu);
+      $("#shBeiZhu").html("暂无备注");
+      $("#memo2").val("审核建议: "+listDate[index].shjy);
+      $("#username_ck").html(listDate[index].shyy);
+      $("#sprq").html(listDate[index].shtime);
+      $("#username_ckJG").html(listDate[index].shtype == 1?"审核通过":"审核拒绝");
+      if(listDate[index].shtype == 2){
+        $("#username_ck").css("color","red");
+        $("#sprq").css("color","red");
+        $("#username_ckJG").css("color","red");
+      }else{
+        $("#username_ck").css("color","blue");
+        $("#sprq").css("color","blue");
+        $("#username_ckJG").css("color","blue");
+      }
+      var $input = document.getElementById("zezhaoceng4");
+      $input.style.display = "block";
+    }
+
+    function ceshiBtn2(number) {
+      var data = "lSID=" + $("#shrLsld").html() +
+        "&SHYY=" + userDate.userCode +
+        "&SHJY=" + $("#memo").val() +
+        "&SHTYPE=" + number +
+        "&SHTIME=" + timeDate(0)
+      $GetJson(data, "zbshupdate", function (date) {
+        $layer.msg('修改成功', { icon: 6 });
+        setTimeout(function () {
+          window.location.reload()
+        }, 1000);
+
+      });
+    }
+
+    function shopListCKClick2(index) {
+      if (!window.confirm("确认删除<" + listDate[index].id + ">联系方式吗?")) {
+        return;
+      }
+      var data = "ID=" + listDate[index].id;
+      $GetJson(data, "lxfsDelete", function (date) {
+        $layer.msg('删除成功', { icon: 6 });
+        init();
+      });
+    }
+
+    function ceshiBtn() {
+      alert("过滤条件:" + $("#guolutiaojian").val())
+    };
+    function RoleListWDate() {
+      var data = "sHTYPE=0";
+      $GetJson(data, "zbshselect1", function (date) {
+        listDate = date;
+        let dateListM = xuliehuaArr(date, true, 2, [5, "shopListCKClick1", "&#xe705;", "查看"], [3, "shopListCKClick2", "", ""], dataListTC, false, "#demo");
+        table.render(dateListM);
+      });
+    }
+
+    function init() {
+      $("#kanjianBox").empty();
+      let zzc = zezhaochengBox1("zezhaoceng4", "通讯录详情", "dowmBox");
+      $(zzc).appendTo("#rongqi1");
+      let InputStyleMy = inputStyle("过滤条件", "guolutiaojian", "请输入过滤条件");
+      let ButtonStyleMy1 = ButtonStyle("查询按钮", 0, "", "ceshiBtn");
+      $(InputStyleMy + ButtonStyleMy1).appendTo("#kanjianBox");
+      RoleListWDate();
+    }
+    init();
+  </script>
+</body>
+
+</html>
